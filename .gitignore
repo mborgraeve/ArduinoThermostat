@@ -33,5 +33,5 @@
 *.su
 
 # Clion
-cmake-build-debug/*
-.idea/*
+.idea/
+cmake-build-debug/
