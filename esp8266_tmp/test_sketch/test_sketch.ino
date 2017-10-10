@@ -3,18 +3,18 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 #include <PString.h>
-#include <DHT.h>
+//#include <DHT.h>
 
 
-#define DHT11_PIN 2
-#define DHTTYPE DHT11
+//#define DHT11_PIN 2
+//#define DHTTYPE DHT11
 //DHT dht(DHT11_PIN, DHTTYPE,11);
 const char* ssid = "BandelBorgraeveBGN"; // remplacer par le SSID de votre WiFi
 const char* password = "coucoucnous"; // remplacer par le mot de passe de votre WiFi
 ESP8266WebServer server(80); // on instancie un serveur ecoutant sur le port 80
-float t, h;
+//float t, h;
 //const int average_loop = 300;
-char answerBuffer[5000];
+//char answerBuffer[5000];
 
 void setup(void){
   Serial.println("Initializing...");
