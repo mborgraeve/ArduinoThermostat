@@ -14,8 +14,7 @@ const char* ssid = "BandelBorgraeveBGN"; // remplacer par le SSID de votre WiFi
 const char* password = "coucoucnous"; // remplacer par le mot de passe de votre WiFi
 ESP8266WebServer server(80); // on instancie un serveur ecoutant sur le port 80
 float t, h;
-//const int average_loop = 300;
-char answerBuffer[5000];
+char answerBuffer[100];
 
 void setup(void){
   Serial.println("Initializing...");
@@ -47,13 +46,8 @@ void setup(void){
     answer.print(",H:");
     answer.print(h);
     answer.print("\n");
-  //  server.send(200, "text/plain", answerBuffer);
     server.send(200, "text/plain", answerBuffer);
-    Serial.print("T:");
-    Serial.print(t);
-    Serial.print(",H:");
-    Serial.print(h);
-    Serial.println(";");
+
   });
   server.begin();
 }
