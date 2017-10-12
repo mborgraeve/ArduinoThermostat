@@ -27,18 +27,18 @@ void setup(void){
   // ici on va juste repondre avec un "hello !"
   server.on("/bonjour", [](){
     server.send(200, "text/plain", "hello !");
-    Serial.print("hello !");
+    Serial.println("hello !");
   });
   pinMode(2, OUTPUT);
   server.on("/2/on", [](){
     digitalWrite(2,HIGH);
     server.send(200, "text/plain", "LED 2 turned on !");
-    Serial.print("LED 2 turned on !");
+    Serial.println("LED 2 turned on !");
   });
   server.on("/2/off", [](){
     digitalWrite(2,LOW);
     server.send(200, "text/plain", "LED 2 turned off !");
-    Serial.print("LED 2 turned off !");
+    Serial.println("LED 2 turned off !");
   });
   server.begin();
 }
