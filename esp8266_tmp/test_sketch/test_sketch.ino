@@ -15,7 +15,7 @@ const char* password = "coucoucnous"; // remplacer par le mot de passe de votre 
 ESP8266WebServer server(80); // on instancie un serveur ecoutant sur le port 80
 float t, h;
 //const int average_loop = 300;
-//char answerBuffer[5000];
+char answerBuffer[5000];
 
 void setup(void){
   Serial.println("Initializing...");
@@ -39,20 +39,20 @@ void setup(void){
   
    //on commence a ecouter les requetes venant de l'exterieur
   server.on("/all", [](){
-  //PString answer(answerBuffer, sizeof(answerBuffer));
+  PString answer(answerBuffer, sizeof(answerBuffer));
     h = dht.readHumidity();          // Read humidity (percent)
     t = dht.readTemperature(false);     // Read temperature
-  //  answer.print("T:");
-  //  answer.print(t);
-  //  answer.print(",H:");
-  //  answer.print(h);
-  //  answer.print("\n");
+    answer.print("T:");
+    answer.print(t);
+    answer.print(",H:");
+    answer.print(h);
+    answer.print("\n");
   //  server.send(200, "text/plain", answerBuffer);
-    server.send(200, "text/plain", "Data read sent to serial");
+    server.send(200, "text/plain", answerBuffer);
     Serial.print("T:");
-    Serial.print(h);
-    Serial.print(",H:");
     Serial.print(t);
+    Serial.print(",H:");
+    Serial.print(h);
     Serial.println(";");
   });
   server.begin();
