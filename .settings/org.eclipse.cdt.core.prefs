@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+environment/project/0.910961921/PATH/delimiter=;
+environment/project/0.910961921/PATH/operation=replace
+environment/project/0.910961921/PATH/value=C\:\\Python27\\;C\:\\Python27\\Scripts;C\:\\Program Files\\Docker\\Docker\\Resources\\bin;C\:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C\:\\ProgramData\\Oracle\\Java\\javapath;C\:\\Users\\Matthieu\\OneDrive\\easyphp\\EasyPHP-DevServer-14.1VC11\\binaries\\php\\php_runningversion;C\:\\Program Files (x86)\\EasyPHP-DevServer-14.1VC11\\binaries\\php\\php_runningversion;C\:\\WINDOWS\\system32;C\:\\WINDOWS;C\:\\WINDOWS\\System32\\Wbem;C\:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C\:\\Program Files (x86)\\GNU\\GnuPG\\pub;C\:\\Program Files (x86)\\Calibre2\\;C\:\\Program Files (x86)\\QuickTime\\QTSystem\\;C\:\\Program Files\\TortoiseGit\\bin;C\:\\Program Files (x86)\\Skype\\Phone\\;E\:\\dev\\git\\bin;C\:\\Program Files\\OpenVPN\\bin;C\:\\Users\\Matthieu\\AppData\\Local\\Microsoft\\WindowsApps;C\:\\Users\\Matthieu\\AppData\\Local\\GitHub\\PortableGit_f02737a78695063deace08e96d5042710d3e32db;E\:\\dev\\ExeShortcuts\\;
+environment/project/0.910961921/append=true
+environment/project/0.910961921/appendContributed=true
