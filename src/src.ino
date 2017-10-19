@@ -1,16 +1,18 @@
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
 #include <ESP8266mDNS.h>
-#include <Timer.h>
+#include "Timer.h"
+#include <GDBStub.h>
 
 #define	NTP_SERVER_NAME  "ca.pool.ntp.org"
 #define	NTP_TIMEZONE -5
 #define NTP_INTERVAL 60 * 1000    // In miliseconds
+#define DEBUG_NTPClient 1
 
 
 const char* ssid = "BandelBorgraeveBGN"; // remplacer par le SSID de votre WiFi
 const char* password = "coucoucnous"; // remplacer par le mot de passe de votre WiFi
-Timer timer = Timer();
+Timer timer;
 
 
 
@@ -32,12 +34,17 @@ void setup(void){
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
 
+  delay(1000);
+  timer = Timer();
   timer.init(NTP_SERVER_NAME, NTP_TIMEZONE, NTP_INTERVAL);
+  delay(2000);
 
 }
 void loop(void){
   // a chaque iteration, on appelle handleClient pour que les requetes soient traitees
-  timer.dayStr(timer.day());
+  //timer.dayStr(timer.day());
   delay(10000);
-  Serial.println(timer.dayStr(timer.day()));
+  Serial.println(timer.h());
+  Serial.println(timer.n());
+  Serial.println(timer.moStr(timer.mo()));
 }

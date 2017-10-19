@@ -13,16 +13,16 @@ const char* Timer::server;
 int Timer::timeZone;
 int Timer::interval;
 
-
-void Timer::init(const char* server, int timeZone, int interval){
+void Timer::init(const char* server, int timeZone, int interval) {
 	Timer::server = server;
 	Timer::timeZone = timeZone;
 	Timer::interval = interval;
 	setSyncProvider(&Timer::syncProvider);
 	setSyncInterval((long) Timer::interval);
 	timeClient.begin();
+	delay(1000);
+	timeClient.forceUpdate();
 }
-
 
 long Timer::syncProvider() {
 	return (long) timeClient.getEpochTime();
@@ -31,126 +31,126 @@ long Timer::syncProvider() {
 /*============================================================================*/
 /*Encapsulating TimeLib.h functions*/
 /*  time and date functions   */
-int Timer::hour() {
+int Timer::h() {
 	return hour();
 }
 ;
 // the hour now
-int Timer::hour(time_t t) {
+int Timer::h(time_t t) {
 	return hour(t);
 }
 ;
 // the hour for the given time
-int Timer::hourFormat12() {
+int Timer::h12() {
 	return hourFormat12();
 }
 ;
 // the hour now in 12 hour format
-int Timer::hourFormat12(time_t t) {
+int Timer::h12(time_t t) {
 	return hourFormat12(t);
 }
 ;
 // the hour for the given time in 12 hour format
-uint8_t Timer::isAM() {
+uint8_t Timer::AM() {
 	return isAM();
 }
 ;
 // returns true if time now is AM
-uint8_t Timer::isAM(time_t t) {
+uint8_t Timer::AM(time_t t) {
 	return isAM(t);
 }
 ;
 // returns true the given time is AM
-uint8_t Timer::isPM() {
+uint8_t Timer::PM() {
 	return isPM();
 }
 ;
 // returns true if time now is PM
-uint8_t Timer::isPM(time_t t) {
+uint8_t Timer::PM(time_t t) {
 	return isPM(t);
 }
 ;
 // returns true the given time is PM
-int Timer::minute() {
+int Timer::m() {
 	return minute();
 }
 ;
 // the minute now
-int Timer::minute(time_t t) {
+int Timer::m(time_t t) {
 	return minute(t);
 }
 ;
 // the minute for the given time
-int Timer::second() {
+int Timer::s() {
 	return second();
 }
 ;
 // the second now
-int Timer::second(time_t t) {
+int Timer::s(time_t t) {
 	return second(t);
 }
 ;
 // the second for the given time
-int Timer::day() {
+int Timer::d() {
 	return day();
 }
 ;
 // the day now
-int Timer::day(time_t t) {
+int Timer::d(time_t t) {
 	return day(t);
 }
 ;
 // the day for the given time
-int Timer::weekday() {
+int Timer::w() {
 	return weekday();
 }
 ;
 // the weekday now (Sunday is day 1)
-int Timer::weekday(time_t t) {
+int Timer::w(time_t t) {
 	return weekday(t);
 }
 ;
 // the weekday for the given time
-int Timer::month() {
+int Timer::mo() {
 	return month();
 }
 ;
 // the month now  (Jan is month 1)
-int Timer::month(time_t t) {
+int Timer::mo(time_t t) {
 	return month(t);
 }
 ;
 // the month for the given time
-int Timer::year() {
+int Timer::y() {
 	return year();
 }
 ;
 // the full four digit year: (2009, 2010 etc)
-int Timer::year(time_t t) {
+int Timer::y(time_t t) {
 	return year(t);
 }
 ;
 // the year for the given time
 
-time_t Timer::now() {
+time_t Timer::n() {
 	return now();
 }
 ;
 // return the current time as seconds since Jan 1 1970
 
-char* Timer::monthStr(uint8_t month) {
+char* Timer::moStr(uint8_t month) {
 	return monthStr(month);
 }
 ;
-char* Timer::dayStr(uint8_t day) {
+char* Timer::dStr(uint8_t day) {
 	return dayStr(day);
 }
 ;
-char* Timer::monthShortStr(uint8_t month) {
+char* Timer::moShortStr(uint8_t month) {
 	return monthShortStr(month);
 }
 ;
-char* Timer::dayShortStr(uint8_t day) {
+char* Timer::dShortStr(uint8_t day) {
 	return dayShortStr(day);
 }
 ;
