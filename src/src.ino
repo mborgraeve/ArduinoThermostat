@@ -2,12 +2,10 @@
 #include <WiFiClient.h>
 #include <ESP8266mDNS.h>
 #include "Timer.h"
-#include <GDBStub.h>
 
-#define	NTP_SERVER_NAME  "ca.pool.ntp.org"
+#define	NTP_SERVER_NAME  "us.pool.ntp.org"
 #define	NTP_TIMEZONE -5
 #define NTP_INTERVAL 60 * 1000    // In miliseconds
-#define DEBUG_NTPClient 1
 
 
 const char* ssid = "BandelBorgraeveBGN"; // remplacer par le SSID de votre WiFi
