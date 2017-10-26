@@ -35,3 +35,5 @@
 # Clion
 .idea/
 cmake-build-debug/
+.pioenvs
+.piolibdeps
