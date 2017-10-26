@@ -100,6 +100,7 @@ bool NTPClient::update() {
   if ((millis() - this->_lastUpdate >= this->_updateInterval)     // Update after _updateInterval
     || this->_lastUpdate == 0) {                                // Update if there was no update yet.
     if (!this->_udpSetup) this->begin();                         // setup the UDP client if needed
+    Serial.println("running update");
     return this->forceUpdate();
   }
   return true;

@@ -46,6 +46,13 @@ public:
 	char* dStr(uint8_t day);
 	char* moShortStr(uint8_t month);
 	char* dShortStr(uint8_t day);
+	static void update();
+	static void forceUpdate();
+	static const char ntpServerName[];
+	//static const char ntpServerName[] = "time.nist.gov";
+	//static const char ntpServerName[] = "time-a.timefreq.bldrdoc.gov";
+	//static const char ntpServerName[] = "time-b.timefreq.bldrdoc.gov";
+	//static const char ntpServerName[] = "time-c.timefreq.bldrdoc.gov";
 private:
 	// NTP Servers:
 	//static const char ntpServerName[] = "us.pool.ntp.org";
@@ -65,10 +72,10 @@ private:
 	static int timeZone;
 	static int interval;
 
-	static WiFiUDP ntp;
+	static WiFiUDP udp;
 	static NTPClient timeClient;
 
-	static long syncProvider();
+	static time_t syncProvider();
 
 };
 

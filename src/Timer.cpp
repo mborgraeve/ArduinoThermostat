@@ -7,11 +7,12 @@
 
 #include <Timer.h>
 
-WiFiUDP Timer::ntp = WiFiUDP();
-NTPClient Timer::timeClient = NTPClient(ntp, server, timeZone, interval);
+WiFiUDP Timer::udp = WiFiUDP();
+NTPClient Timer::timeClient = NTPClient(udp, server, timeZone, interval);
 const char* Timer::server;
 int Timer::timeZone;
 int Timer::interval;
+const char Timer::ntpServerName[] = "us.pool.ntp.org";
 
 void Timer::init(const char* server, int timeZone, int interval) {
 	Timer::server = server;
@@ -21,11 +22,18 @@ void Timer::init(const char* server, int timeZone, int interval) {
 	setSyncInterval((long) Timer::interval);
 	timeClient.begin();
 	delay(1000);
-	timeClient.forceUpdate();
+	//timeClient.forceUpdate();
 }
 
-long Timer::syncProvider() {
+time_t Timer::syncProvider() {
 	return (long) timeClient.getEpochTime();
+}
+
+void Timer::update() {
+	Timer::timeClient.update();
+}
+void Timer::forceUpdate() {
+	Timer::timeClient.forceUpdate();
 }
 
 /*============================================================================*/
