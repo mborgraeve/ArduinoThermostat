@@ -31,5 +31,18 @@
 # Debug files
 *.dSYM/
 *.su
+
+# Clion
+.idea/
+cmake-build-debug/
 .pioenvs
 .piolibdeps
+
+# platformio
+.pioenvs/
+
+#eclipse
+.cproject
+.setting/
+.project
+.travis.yml
