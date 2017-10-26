@@ -3,15 +3,14 @@
  * Example showing time sync to NTP time source
  *
  * This sketch uses the ESP8266WiFi library
- * Modified and based on https://github.com/PaulStoffregen/Time/blob/master/examples/TimeNTP_ESP8266WiFi/TimeNTP_ESP8266WiFi.ino
  */
 
 #include <TimeLib.h>
 #include <ESP8266WiFi.h>
 #include <WiFiUdp.h>
 
-const char ssid[] = "BandelBorgraeveBGN";  //  your network SSID (name)
-const char pass[] = "coucoucnous";       // your network password
+const char ssid[] = "*************";  //  your network SSID (name)
+const char pass[] = "********";       // your network password
 
 // NTP Servers:
 static const char ntpServerName[] = "us.pool.ntp.org";
@@ -31,11 +30,14 @@ WiFiUDP Udp;
 unsigned int localPort = 8888;  // local port to listen for UDP packets
 
 time_t getNtpTime();
+void digitalClockDisplay();
+void printDigits(int digits);
 void sendNTPpacket(IPAddress &address);
 
 void setup()
 {
-  Serial.begin(115200);
+  Serial.begin(9600);
+  while (!Serial) ; // Needed for Leonardo only
   delay(250);
   Serial.println("TimeNTP Example");
   Serial.print("Connecting to ");
@@ -62,18 +64,37 @@ time_t prevDisplay = 0; // when the digital clock was displayed
 
 void loop()
 {
-	  Serial.print(hour());
-	  Serial.print(" ");
-	  Serial.print(day());
-	  Serial.print(".");
-	  Serial.print(month());
-	  Serial.print(".");
-	  Serial.print(year());
-	  Serial.println();
-	  delay(1000);
+  if (timeStatus() != timeNotSet) {
+    if (now() != prevDisplay) { //update the display only if time has changed
+      prevDisplay = now();
+      digitalClockDisplay();
+    }
+  }
 }
 
+void digitalClockDisplay()
+{
+  // digital clock display of the time
+  Serial.print(hour());
+  printDigits(minute());
+  printDigits(second());
+  Serial.print(" ");
+  Serial.print(day());
+  Serial.print(".");
+  Serial.print(month());
+  Serial.print(".");
+  Serial.print(year());
+  Serial.println();
+}
 
+void printDigits(int digits)
+{
+  // utility for digital clock display: prints preceding colon and leading 0
+  Serial.print(":");
+  if (digits < 10)
+    Serial.print('0');
+  Serial.print(digits);
+}
 
 /*-------- NTP code ----------*/
 
