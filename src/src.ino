@@ -40,8 +40,8 @@ void loop(void) {
 	// a chaque iteration, on appelle handleClient pour que les requetes soient traitees
 	//timer.dayStr(timer.day());
 	delay(1000);
-	Serial.println(timer.h());
 	Serial.println(timer.n());
+	Serial.println(now());
 	Serial.println(timer.moStr(timer.mo()));
 	if (compteur > 10) {
 		compteur = compteur % 30;

@@ -68,15 +68,12 @@ bool NTPClient::forceUpdate() {
   // Wait till data is there or timeout...
   byte timeout = 0;
   int cb = 0;
-  Serial.println("timeout");
   do {
-    delay ( 100 );
+    delay ( 10 );
     cb = this->_udp->parsePacket();
     if (timeout > 100) return false; // timeout after 1000 ms
     timeout++;
-    Serial.println("timing...");
   } while (cb == 0);
-  Serial.println("out of do");
 
   this->_lastUpdate = millis() - (10 * (timeout + 1)); // Account for delay in reading the time
 
@@ -87,12 +84,8 @@ bool NTPClient::forceUpdate() {
   // combine the four bytes (two words) into a long integer
   // this is NTP time (seconds since Jan 1 1900):
   unsigned long secsSince1900 = highWord << 16 | lowWord;
-  Serial.println("after read and assignements");
-  Serial.println(highWord);
-  Serial.println(lowWord);
-  Serial.println(secsSince1900);
   this->_currentEpoc = secsSince1900 - SEVENZYYEARS;
-  Serial.println(this->_currentEpoc);
+
   return true;
 }
 
@@ -100,7 +93,6 @@ bool NTPClient::update() {
   if ((millis() - this->_lastUpdate >= this->_updateInterval)     // Update after _updateInterval
     || this->_lastUpdate == 0) {                                // Update if there was no update yet.
     if (!this->_udpSetup) this->begin();                         // setup the UDP client if needed
-    Serial.println("running update");
     return this->forceUpdate();
   }
   return true;
@@ -155,7 +147,6 @@ void NTPClient::setUpdateInterval(int updateInterval) {
 
 void NTPClient::sendNTPPacket() {
   // set all bytes in the buffer to 0
-	Serial.println("before parcket size");
   memset(this->_packetBuffer, 0, NTP_PACKET_SIZE);
   // Initialize values needed to form NTP request
   // (see URL above for details on the packets)
@@ -171,11 +162,7 @@ void NTPClient::sendNTPPacket() {
 
   // all NTP fields have been given values, now
   // you can send a packet requesting a timestamp:
-  Serial.println("begin packet");
   this->_udp->beginPacket(this->_poolServerName, 123); //NTP requests are to port 123
-  Serial.println("sending packet");
   this->_udp->write(this->_packetBuffer, NTP_PACKET_SIZE);
-  Serial.println("ending packet");
   this->_udp->endPacket();
-  Serial.println("end");
 }
