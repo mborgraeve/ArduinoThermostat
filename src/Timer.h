@@ -68,7 +68,7 @@ private:
 	//const int timeZone = -8;  // Pacific Standard Time (USA)
 	//const int timeZone = -7;  // Pacific Daylight Time (USA)
 
-	static const char* server;
+	//static const char* server;
 	static int timeZone;
 	static int interval;
 

@@ -64,20 +64,17 @@ bool NTPClient::forceUpdate() {
   #ifdef DEBUG_NTPClient
     Serial.println("Update from NTP Server");
   #endif
-    Serial.println("Update from NTP Server");
   this->sendNTPPacket();
-  Serial.println("Update done");
   // Wait till data is there or timeout...
   byte timeout = 0;
   int cb = 0;
-  Serial.println("entering do with values");
   Serial.println("timeout");
-  Serial.println(cb);
   do {
-    delay ( 10 );
+    delay ( 100 );
     cb = this->_udp->parsePacket();
     if (timeout > 100) return false; // timeout after 1000 ms
     timeout++;
+    Serial.println("timing...");
   } while (cb == 0);
   Serial.println("out of do");
 
@@ -91,8 +88,11 @@ bool NTPClient::forceUpdate() {
   // this is NTP time (seconds since Jan 1 1900):
   unsigned long secsSince1900 = highWord << 16 | lowWord;
   Serial.println("after read and assignements");
+  Serial.println(highWord);
+  Serial.println(lowWord);
+  Serial.println(secsSince1900);
   this->_currentEpoc = secsSince1900 - SEVENZYYEARS;
-
+  Serial.println(this->_currentEpoc);
   return true;
 }
 
@@ -155,6 +155,7 @@ void NTPClient::setUpdateInterval(int updateInterval) {
 
 void NTPClient::sendNTPPacket() {
   // set all bytes in the buffer to 0
+	Serial.println("before parcket size");
   memset(this->_packetBuffer, 0, NTP_PACKET_SIZE);
   // Initialize values needed to form NTP request
   // (see URL above for details on the packets)

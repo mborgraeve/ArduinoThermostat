@@ -5,24 +5,23 @@
  *      Author: Matthieu
  */
 
-#include <Timer.h>
+#include "Timer.h"
 
 WiFiUDP Timer::udp = WiFiUDP();
-NTPClient Timer::timeClient = NTPClient(udp, server, timeZone, interval);
-const char* Timer::server;
 int Timer::timeZone;
 int Timer::interval;
 const char Timer::ntpServerName[] = "us.pool.ntp.org";
+NTPClient Timer::timeClient = NTPClient(udp, ntpServerName, timeZone, interval);
 
 void Timer::init(const char* server, int timeZone, int interval) {
-	Timer::server = server;
+	//Timer::ntpServerName = server;
 	Timer::timeZone = timeZone;
 	Timer::interval = interval;
 	setSyncProvider(&Timer::syncProvider);
 	setSyncInterval((long) Timer::interval);
 	timeClient.begin();
 	delay(1000);
-	//timeClient.forceUpdate();
+	timeClient.forceUpdate();
 }
 
 time_t Timer::syncProvider() {

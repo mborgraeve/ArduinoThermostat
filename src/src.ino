@@ -45,7 +45,7 @@ void loop(void) {
 	Serial.println(timer.moStr(timer.mo()));
 	if (compteur > 10) {
 		compteur = compteur % 30;
-		timer.update();
+		timer.forceUpdate();
 	}
 	compteur++;
 }
