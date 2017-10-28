@@ -40,6 +40,8 @@ cmake-build-debug/
 
 # platformio
 .pioenvs/
+.pioenvs
+.piolibdeps
 
 #eclipse
 .cproject
