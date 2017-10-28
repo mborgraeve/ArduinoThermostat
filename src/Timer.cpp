@@ -8,24 +8,28 @@
 #include "Timer.h"
 
 WiFiUDP Timer::udp = WiFiUDP();
-int Timer::timeZone;
-int Timer::interval;
 const char Timer::ntpServerName[] = "us.pool.ntp.org";
-NTPClient Timer::timeClient = NTPClient(udp, ntpServerName, timeZone, interval);
+NTPClient Timer::timeClient = NTPClient(udp, ntpServerName, 0, 0);
 
 void Timer::init(const char* server, int timeZone, int interval) {
 	//Timer::ntpServerName = server;
-	Timer::timeZone = timeZone;
-	Timer::interval = interval;
+
 	setSyncProvider(&Timer::syncProvider);
-	setSyncInterval((long) Timer::interval);
+	setSyncInterval((long) interval);
+	timeClient.setUpdateInterval(interval);
+	timeClient.setTimeOffset(timeZone);
 	timeClient.begin();
 	delay(1000);
 	timeClient.forceUpdate();
 }
 
+time_t Timer::getEpochTime() {
+	return timeClient.getEpochTime();
+}
+
 time_t Timer::syncProvider() {
-	return (long) timeClient.getEpochTime();
+	return (time_t) timeClient.getEpochTime();
+
 }
 
 void Timer::update() {
@@ -33,6 +37,7 @@ void Timer::update() {
 }
 void Timer::forceUpdate() {
 	Timer::timeClient.forceUpdate();
+	setTime((time_t) Timer::timeClient.getEpochTime());
 }
 
 /*============================================================================*/

@@ -4,13 +4,12 @@
 #include "Timer.h"
 
 #define	NTP_SERVER_NAME  "us.pool.ntp.org"
-#define	NTP_TIMEZONE -5
-#define NTP_INTERVAL 60 * 1000    // In miliseconds
+#define	NTP_TIMEZONE -4*60*60
+#define NTP_INTERVAL 10 * 1000    // In miliseconds
 
 const char* ssid = "BandelBorgraeveBGN"; // remplacer par le SSID de votre WiFi
 const char* password = "coucoucnous"; // remplacer par le mot de passe de votre WiFi
 Timer timer;
-int compteur;
 
 String formattedTime;
 
@@ -34,18 +33,21 @@ void setup(void) {
 	timer = Timer();
 	timer.init(Timer::ntpServerName, NTP_TIMEZONE, NTP_INTERVAL);
 	delay(2000);
-	compteur = 0;
+	timer.forceUpdate();
 }
 void loop(void) {
 	// a chaque iteration, on appelle handleClient pour que les requetes soient traitees
 	//timer.dayStr(timer.day());
 	delay(1000);
-	Serial.println(timer.n());
-	Serial.println(now());
-	Serial.println(timer.moStr(timer.mo()));
-	if (compteur > 10) {
-		compteur = compteur % 30;
-		timer.forceUpdate();
-	}
-	compteur++;
+	Serial.print(timer.y());
+	Serial.print("/");
+	Serial.print(timer.mo());
+	Serial.print("/");
+	Serial.print(timer.d());
+	Serial.print("T");
+	Serial.print(timer.h());
+	Serial.print(":");
+	Serial.print(timer.m());
+	Serial.print(":");
+	Serial.println(timer.s());
 }

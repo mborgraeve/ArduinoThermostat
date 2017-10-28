@@ -48,6 +48,7 @@ public:
 	char* dShortStr(uint8_t day);
 	static void update();
 	static void forceUpdate();
+	static time_t getEpochTime();
 	static const char ntpServerName[];
 	//static const char ntpServerName[] = "time.nist.gov";
 	//static const char ntpServerName[] = "time-a.timefreq.bldrdoc.gov";
@@ -69,8 +70,6 @@ private:
 	//const int timeZone = -7;  // Pacific Daylight Time (USA)
 
 	//static const char* server;
-	static int timeZone;
-	static int interval;
 
 	static WiFiUDP udp;
 	static NTPClient timeClient;
