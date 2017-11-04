@@ -48,7 +48,7 @@ void setup(void) {
 	dht = new DHT(DHT11_PIN, DHTTYPE, 11);
 	timer->forceUpdate();
 
-	instruction = new Instruction(timer, 16.0, 18.0, (long) 0);
+	instruction = new Instruction(timer, 16.0, 18.0, (long) 1509812400);
 
 	smoother = new DHTSmoother(dht, timer, 0.08, (long)2);
 
