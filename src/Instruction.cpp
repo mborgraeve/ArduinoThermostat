@@ -62,7 +62,7 @@ void Instruction::setDefaultTemperature(float defaultTemperature_) {
  * see *_POWER static variables in Instruction class.
  */
 
-int Instruction::shouldHeat(DHT* dht) {
+int Instruction::shouldHeat(DHTSmoother* dht) {
 	//handle two kind of instructions : cold and hot ones
 	//TODO the thinking is not done yet
 	if (Instruction::timer->getEpochTime() <= getLimit()) {
@@ -75,16 +75,15 @@ int Instruction::shouldHeat(DHT* dht) {
 }
 
 int Instruction::compare(float instructed, float current) {
-	//TODO looks like its reversed.
-	if (instructed > current + Instruction::T_DIFF) {
+	if (current > instructed + Instruction::T_DIFF) {
 		return Instruction::NO_POWER;
-	} else if (instructed > current) {
+	} else if (current > instructed) {
 		return Instruction::VERY_LOW_POWER;
-	} else if (instructed > current - Instruction::T_DIFF) {
+	} else if (current > instructed - Instruction::T_DIFF) {
 		return Instruction::LOW_POWER;
-	} else if (instructed > current - Instruction::T_DIFF * 2) {
+	} else if (current > instructed - Instruction::T_DIFF * 2) {
 		return Instruction::MEDIUM_POWER;
-	} else if (instructed > current - Instruction::T_DIFF * 3) {
+	} else if (current > instructed - Instruction::T_DIFF * 3) {
 		return Instruction::HIGH_POWER;
 	} else {
 		return Instruction::FULL_POWER;

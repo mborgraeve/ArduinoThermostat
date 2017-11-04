@@ -46,11 +46,11 @@ void setup(void) {
 	delay(1000);
 
 	dht = new DHT(DHT11_PIN, DHTTYPE, 11);
-	//timer->forceUpdate();
+	timer->forceUpdate();
 
-	instruction = new Instruction(timer, 14.0, 15.0, (long) 0);
+	instruction = new Instruction(timer, 16.0, 18.0, (long) 0);
 
-	smoother = new DHTSmoother(dht, timer, 0.1, (long)2);
+	smoother = new DHTSmoother(dht, timer, 0.08, (long)2);
 
 	server.on("/all", []() {
 		PString answer(answerBuffer, sizeof(answerBuffer));
@@ -77,7 +77,7 @@ void setup(void) {
 			answer.print(",");
 			answer.print(instruction->getInstructedTemperature());
 			answer.print("=");
-			answer.println(instruction->shouldHeat(dht));
+			answer.println(instruction->shouldHeat(smoother));
 			server.send(200, "text/plain", answerBuffer);
 		});
 	server.begin();
