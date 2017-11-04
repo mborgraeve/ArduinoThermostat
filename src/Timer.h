@@ -15,6 +15,9 @@
 
 class Timer {
 public:
+	virtual ~Timer();
+	Timer(const char* server, int timeZone, int interval);
+	Timer();
 	static void init(const char* server, int timeZone, int interval);
 
 	/*============================================================================*/

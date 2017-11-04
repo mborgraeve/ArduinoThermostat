@@ -11,6 +11,15 @@ WiFiUDP Timer::udp = WiFiUDP();
 const char Timer::ntpServerName[] = "us.pool.ntp.org";
 NTPClient Timer::timeClient = NTPClient(udp, ntpServerName, 0, 0);
 
+Timer::Timer(const char* server, int timeZone, int interval) {
+	this->init(server, timeZone, interval);
+}
+Timer::Timer() {
+}
+Timer::~Timer() {
+	// TODO Auto-generated destructor stub
+}
+
 void Timer::init(const char* server, int timeZone, int interval) {
 	//Timer::ntpServerName = server;
 

@@ -9,10 +9,22 @@
 
 float defaultTemperature = 13.0;
 float instructedTemperature = 16.0;
-time_t limit = 0;
-Timer Instruction::timer;
+const float Instruction::T_DIFF = 0.1;
+time_t blimit = 0;
 
-Instruction::Instruction(Timer timer, float defaultTemperature,
+Instruction::Instruction(Timer* timer, float defaultTemperature,
+		float instructedTemperature, time_t limit) {
+	this->init(timer, defaultTemperature, instructedTemperature, limit);
+
+}
+Instruction::Instruction() {
+}
+
+Instruction::~Instruction() {
+	// TODO Auto-generated destructor stub
+}
+
+void Instruction::init(Timer* timer, float defaultTemperature,
 		float instructedTemperature, time_t limit) {
 	this->setDefaultTemperature(defaultTemperature);
 	Instruction::setTimer(timer);
@@ -20,27 +32,27 @@ Instruction::Instruction(Timer timer, float defaultTemperature,
 	this->setLimit(limit);
 }
 
-Instruction::~Instruction() {
-	// TODO Auto-generated destructor stub
+void Instruction::setTimer(Timer* timer) {
+	Instruction::timer = timer;
 }
 
-float getDefaultTemperature() {
+float Instruction::getDefaultTemperature() {
 	return defaultTemperature;
 }
-float getInstructedTemperature() {
+float Instruction::getInstructedTemperature() {
 	return instructedTemperature;
 }
-time_t getLimit() {
+time_t Instruction::getLimit() {
 	return limit;
 }
-void setLimit(time_t limit_) {
+void Instruction::setLimit(time_t limit_) {
 	limit = limit_;
 }
 
-void setInstructedTemperature(float instructedTemperature_) {
+void Instruction::setInstructedTemperature(float instructedTemperature_) {
 	instructedTemperature = instructedTemperature_;
 }
-void setDefaultTemperature(float defaultTemperature_) {
+void Instruction::setDefaultTemperature(float defaultTemperature_) {
 	defaultTemperature = defaultTemperature_;
 }
 
@@ -49,31 +61,36 @@ void setDefaultTemperature(float defaultTemperature_) {
  * see *_POWER static variables in Instruction class.
  */
 
-int shouldHeat(DHT dht) {
+int Instruction::shouldHeat(DHT* dht) {
 	//handle two kind of instructions : cold and hot ones
 	//TODO the thinking is not done yet
-	if (Instruction::timer.getEpochTime() > getLimit()) {
-		switch (floor((dht.readTemperature() - instructedTemperature) * 2) / 2) {
-		case -2:
-			break;
-		case -1:
-			break;
-		default:
-			if (floor((dht.readTemperature() - instructedTemperature) * 2) / 2
-					< 2) {
-				//more than 2 C degrees difference, full thrust
-				return Instruction::FULL_POWER;
-			} else if (floor(
-					(dht.readTemperature() - instructedTemperature) * 2) / 2
-					>= 0) {
-				//current is higher than instructed, full stop.
-				return Instruction::NO_POWER;
-			}
-			break;
-		}
-	else {}
+	if (Instruction::timer->getEpochTime() <= getLimit()) {
+		return Instruction::compare(instructedTemperature,
+				dht->readTemperature());
+	} else {
+		return Instruction::compare(defaultTemperature, dht->readTemperature());
+	}
 
 }
 
-bool parseInstruction(const char*) {}
+int Instruction::compare(float instructed, float current) {
+	if (instructed > current + Instruction::T_DIFF) {
+		return Instruction::NO_POWER;
+	} else if (instructed > current) {
+		return Instruction::VERY_LOW_POWER;
+	} else if (instructed > current - Instruction::T_DIFF) {
+		return Instruction::LOW_POWER;
+	} else if (instructed > current - Instruction::T_DIFF * 2) {
+		return Instruction::MEDIUM_POWER;
+	} else if (instructed > current - Instruction::T_DIFF * 3) {
+		return Instruction::HIGH_POWER;
+	} else {
+		return Instruction::FULL_POWER;
+	}
+	//SHould not happen
+	return Instruction::NO_POWER;
+}
+bool Instruction::parseInstruction(const char*) {
+	return false;
+}
 
