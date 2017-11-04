@@ -13,6 +13,7 @@ float alpha = 0;
 time_t lastUpdate;
 time_t updateDelay;
 
+
 DHTSmoother::DHTSmoother(DHT* dht, Timer* timer, float alpha,
 		time_t updateDelay) {
 	this->init(dht, timer, alpha, updateDelay);
@@ -22,7 +23,6 @@ DHTSmoother::DHTSmoother() {
 }
 
 DHTSmoother::~DHTSmoother() {
-// TODO Auto-generated destructor stub
 }
 void DHTSmoother::init(DHT* dht, Timer* timer, float alpha, time_t updateDelay) {
 	this->dht = dht;
@@ -38,6 +38,7 @@ void DHTSmoother::init(DHT* dht, Timer* timer, float alpha, time_t updateDelay) 
  * Supposed to be called in every loop to ensure a proper smoothing.
  */
 void DHTSmoother::update() {
+	//TODO Stays at -1
 	bool updated = false;
 	if (this->lastUpdate + this->updateDelay > timer->n()) {
 		if (this->smoothedHumidity != -1) {

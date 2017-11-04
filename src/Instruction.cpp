@@ -11,6 +11,7 @@ float defaultTemperature = 13.0;
 float instructedTemperature = 16.0;
 const float Instruction::T_DIFF = 0.1;
 time_t blimit = 0;
+Timer* Instruction::timer;
 
 Instruction::Instruction(Timer* timer, float defaultTemperature,
 		float instructedTemperature, time_t limit) {
@@ -74,6 +75,7 @@ int Instruction::shouldHeat(DHT* dht) {
 }
 
 int Instruction::compare(float instructed, float current) {
+	//TODO looks like its reversed.
 	if (instructed > current + Instruction::T_DIFF) {
 		return Instruction::NO_POWER;
 	} else if (instructed > current) {
