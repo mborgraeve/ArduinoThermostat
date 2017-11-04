@@ -62,7 +62,7 @@ void Instruction::setDefaultTemperature(float defaultTemperature_) {
  * see *_POWER static variables in Instruction class.
  */
 
-int Instruction::shouldHeat(DHTSmoother* dht) {
+int Instruction::getPower(DHTSmoother* dht) {
 	//handle two kind of instructions : cold and hot ones
 	//TODO let it run several minutes on COM port to check if no error.
 	if (Instruction::timer->getEpochTime() <= getLimit()) {
@@ -92,6 +92,7 @@ int Instruction::compare(float instructed, float current) {
 	return Instruction::NO_POWER;
 }
 bool Instruction::parseInstruction(const char*) {
+	//TODO
 	return false;
 }
 

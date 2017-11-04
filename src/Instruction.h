@@ -31,7 +31,8 @@ public:
 	void setLimit(time_t limit_);
 	void setInstructedTemperature(float instructedTemperature_);
 	void setDefaultTemperature(float defaultTemperature_);
-	int shouldHeat(DHTSmoother* dht);bool parseInstruction(const char*);
+	int getPower(DHTSmoother* dht);
+	bool parseInstruction(const char*);
 	static const int NO_POWER = 0;
 	static const int VERY_LOW_POWER = 1;
 	static const int LOW_POWER = 2;
