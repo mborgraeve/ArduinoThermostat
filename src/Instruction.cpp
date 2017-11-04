@@ -64,7 +64,7 @@ void Instruction::setDefaultTemperature(float defaultTemperature_) {
 
 int Instruction::shouldHeat(DHTSmoother* dht) {
 	//handle two kind of instructions : cold and hot ones
-	//TODO the thinking is not done yet
+	//TODO let it run several minutes on COM port to check if no error.
 	if (Instruction::timer->getEpochTime() <= getLimit()) {
 		return Instruction::compare(instructedTemperature,
 				dht->readTemperature());
