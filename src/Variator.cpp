@@ -43,7 +43,8 @@ void Variator::update() {
 			< this->targetRatio * this->cycleDuration) && (!this->heating)) {
 		digitalWrite(this->pin, HIGH);
 		this->heating = true;
-	} else if (this->heating) { //no heat
+	} else if (((s - this->cycleStart) * Instruction::FULL_POWER
+			>= this->targetRatio * this->cycleDuration) && this->heating) { //no heat
 		digitalWrite(this->pin, LOW);
 		this->heating = false;
 	}
