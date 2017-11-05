@@ -8,7 +8,6 @@
 #include <Variator.h>
 
 Variator::Variator() {
-	// TODO Auto-generated constructor stub
 }
 Variator::Variator(int ratio, time_t cycleDuration, uint8_t pin) {
 	this->cycleDuration = cycleDuration;
@@ -18,7 +17,6 @@ Variator::Variator(int ratio, time_t cycleDuration, uint8_t pin) {
 }
 
 Variator::~Variator() {
-	// TODO Auto-generated destructor stub
 }
 
 void Variator::setRatio(int ratio) {

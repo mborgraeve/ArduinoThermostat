@@ -17,7 +17,6 @@ Timer::Timer(const char* server, int timeZone, int interval) {
 Timer::Timer() {
 }
 Timer::~Timer() {
-	// TODO Auto-generated destructor stub
 }
 
 void Timer::init(const char* server, int timeZone, int interval) {

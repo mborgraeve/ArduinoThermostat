@@ -22,7 +22,6 @@ Instruction::Instruction() {
 }
 
 Instruction::~Instruction() {
-	// TODO Auto-generated destructor stub
 }
 
 void Instruction::init(Timer* timer, float defaultTemperature,
@@ -90,9 +89,5 @@ int Instruction::compare(float instructed, float current) {
 	}
 	//SHould not happen
 	return Instruction::NO_POWER;
-}
-bool Instruction::parseInstruction(const char*) {
-	//TODO
-	return false;
 }
 

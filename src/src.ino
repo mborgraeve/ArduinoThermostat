@@ -28,6 +28,12 @@ DHTSmoother* smoother;
 Variator* vario;
 
 void setup(void) {
+
+	//TODO use ArduinoJson (https://github.com/bblanchon/ArduinoJson) to parse JSON.
+	//TODO Create a webserver that will trigger a call to retrieve settings from settings server.
+	//TODO create the functions that will parse a json answer containing all settings: variator cycle, pins used, instructed, default, next default update
+	//TODO: be able to send info of T, H, heating, time limit, instructed, default, variator cycle, pins used
+	//TODO create the settings server.
 	Serial.begin(115200);
 	Serial.println("Initializing...");
 	//DHT pin
@@ -50,7 +56,7 @@ void setup(void) {
 	dht = new DHT(DHT11_PIN, DHTTYPE, 11);
 	timer->forceUpdate();
 
-	instruction = new Instruction(timer, 17.0, 18.0, (long) 1509812400);
+	instruction = new Instruction(timer, 17	.0, 18.0, (long) 1509812400);
 
 	smoother = new DHTSmoother(dht, timer, 0.08, (long) 2);
 
