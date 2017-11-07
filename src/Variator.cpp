@@ -22,13 +22,20 @@ Variator::~Variator() {
 void Variator::setRatio(int ratio) {
 	this->targetRatio = ratio;
 }
+time_t Variator::getRatio() {
+	return this->targetRatio;
+}
 
 void Variator::setCycleDuration(time_t cycleDuration) {
 	if (cycleDuration > 0) {
 		this->cycleDuration = cycleDuration;
 	}
-
 }
+
+time_t Variator::getCycleDuration() {
+	return this->cycleDuration;
+}
+
 void Variator::update() {
 	int heater = this->cycleDuration / this->targetRatio;
 	int s = millis() / 1000;

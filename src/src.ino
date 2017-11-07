@@ -8,6 +8,7 @@
 #include "Instruction.h"
 #include "DHTSmoother.h"
 #include "Variator.h"
+#include "Updater.h"
 
 #define	NTP_SERVER_NAME  "us.pool.ntp.org"
 #define	NTP_TIMEZONE -4*60*60
@@ -20,7 +21,8 @@ const char* ssid = "BandelBorgraeveBGN"; // remplacer par le SSID de votre WiFi
 const char* password = "coucoucnous"; // remplacer par le mot de passe de votre WiFi
 Timer* timer;
 ESP8266WebServer server(80); // on instancie un serveur ecoutant sur le port 80
-char answerBuffer[100];
+char answerBuffer[250];
+char serverBuffer[250];
 
 DHT* dht;
 Instruction* instruction;
@@ -28,11 +30,7 @@ DHTSmoother* smoother;
 Variator* vario;
 
 void setup(void) {
-
-	//TODO use ArduinoJson (https://github.com/bblanchon/ArduinoJson) to parse JSON.
 	//TODO Create a webserver that will trigger a call to retrieve settings from settings server.
-	//TODO create the functions that will parse a json answer containing all settings: variator cycle, pins used, instructed, default, next default update
-	//TODO: be able to send info of T, H, heating, time limit, instructed, default, variator cycle, pins used
 	//TODO create the settings server.
 	Serial.begin(115200);
 	Serial.println("Initializing...");
@@ -56,40 +54,52 @@ void setup(void) {
 	dht = new DHT(DHT11_PIN, DHTTYPE, 11);
 	timer->forceUpdate();
 
-	instruction = new Instruction(timer, 17	.0, 18.0, (long) 1509812400);
+	instruction = new Instruction(timer, 17.0, 18.0, (long) 1509812400);
 
 	smoother = new DHTSmoother(dht, timer, 0.08, (long) 2);
 
-	vario = new Variator(0,60,VARIO_PIN);
+	vario = new Variator(0, 60, VARIO_PIN);
 
 	server.on("/all", []() {
 		PString answer(answerBuffer, sizeof(answerBuffer));
-		answer.print("T:");
+		answer.print("{\"Temperature\":");
 		answer.print(smoother->readTemperature());
-		answer.print(",H:");
+		answer.print(",\"Humidity\":");
 		answer.print(smoother->readHumidity());
-		answer.print(",Inst:");
+		answer.print(",\"Instruction\":{\"InstrutedTemperature\":");
 		answer.print(instruction->getInstructedTemperature());
-		answer.print(",Def:");
+		answer.print(",\"DefaultTemperature\":");
 		answer.print(instruction->getDefaultTemperature());
-		answer.print(",Limit:");
+		answer.print(",\"TimeLimit\":");
 		answer.print(instruction->getLimit());
-		answer.print(",command:");
+		answer.print("},\"Power\":");
 		answer.print(instruction->getPower(smoother));
-		answer.print(",Time:");
-		answer.print(timer->y());
-		answer.print("/");
-		answer.print(timer->mo());
-		answer.print("/");
-		answer.print(timer->d());
-		answer.print("T");
-		answer.print(timer->h());
-		answer.print(":");
-		answer.print(timer->m());
-		answer.print(":");
-		answer.print(timer->s());
+		answer.print(",\"Variator\":{\"VariatorCycle\":");
+		answer.print(vario->getCycleDuration());
+		answer.print(",\"VariatorRatio\":");
+		answer.print(vario->getRatio());
+		answer.print("},\"Time\":");
+		answer.print(timer->n());
+		answer.print("}");
 		server.send(200, "text/plain", answerBuffer);
 	});
+	server.on("/update", []() {
+		PString answer(serverBuffer, sizeof(serverBuffer));
+		HTTPClient http;
+		http.begin("192.168.0.184",8080);
+		Serial.println("before get");
+		int httpCode = http.GET();
+		Serial.println("HTTPCode:");
+		Serial.println(httpCode);
+		if (httpCode > 0) {
+			String payload = http.getString();
+			answer.println(payload);
+			Serial.println(payload);
+		}
+		http.end();
+		server.send(200);
+//TODO here call for update from local server.
+		});
 	server.begin();
 }
 void loop(void) {

@@ -18,6 +18,8 @@ public:
 	virtual ~Variator();
 	void setRatio(int ratio);
 	void setCycleDuration(time_t cycleDuration);
+	time_t getCycleDuration();
+	time_t getRatio();
 	void update();bool isHeating();
 private:
 	int targetRatio = Instruction::NO_POWER;
