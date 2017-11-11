@@ -32,7 +32,7 @@ void Updater::update(Variator* vario, Instruction* instruction) {
 			server->send(500);
 			return;
 		}
-		if (!this->updateSettings( parser, Variator* vario, Instruction* instruction)) {
+		if (!this->updateSettings(&parser, vario, instruction)) {
 			http.end();
 			server->send(500);
 			return;
@@ -45,10 +45,11 @@ void Updater::update(Variator* vario, Instruction* instruction) {
 	server->send(500);
 }
 
-bool Updater::updateSettings(JsonObject* parser, Variator* vario, Instruction* instruction, ){
-	vario->setCycleDuration(parser["CycleDuration"]);
-	instruction->setDefaultTemperature(parser["DefaultTemperature"]);
-	instruction->setInstructedTemperature(parser["InstructedTemperature"]);
+bool Updater::updateSettings(JsonObject* parser, Variator* vario,
+		Instruction* instruction) {
+	vario->setCycleDuration(parser->operator []("CycleDuration"));
+	instruction->setDefaultTemperature(parser->operator []("DefaultTemperature"));
+	instruction->setInstructedTemperature(parser->operator []("InstructedTemperature"));
 
 	return true;
 
