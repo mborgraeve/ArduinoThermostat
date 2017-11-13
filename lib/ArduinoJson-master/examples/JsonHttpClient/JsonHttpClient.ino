@@ -11,7 +11,7 @@
 
 EthernetClient client;
 
-const char* server = "jsonplaceholder.typicode.com";  // server's address
+const char* wServer = "jsonplaceholder.typicode.com";  // server's address
 const char* resource = "/users/1";                    // http resource
 const unsigned long BAUD_RATE = 9600;                 // serial connection speed
 const unsigned long HTTP_TIMEOUT = 10000;  // max respone time from server
@@ -31,8 +31,8 @@ void setup() {
 
 // ARDUINO entry point #2: runs over and over again forever
 void loop() {
-  if (connect(server)) {
-    if (sendRequest(server, resource) && skipResponseHeaders()) {
+  if (connect(wServer)) {
+    if (sendRequest(wServer, resource) && skipResponseHeaders()) {
       UserData userData;
       if (readReponseContent(&userData)) {
         printUserData(&userData);

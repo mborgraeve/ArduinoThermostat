@@ -6,14 +6,14 @@
  */
 
 #include "Updater.h"
-ESP8266WebServer* server;
+ESP8266WebServer* webServer;
 char* URI;
 StaticJsonBuffer<300> JSONBuffer;
 
-Updater::Updater(ESP8266WebServer* server, char* URI, int port = 80) {
+Updater::Updater(ESP8266WebServer* webServer, char* URI, int port = 80) {
 	this->URI = URI;
 	this->port = port;
-	this->server = server;
+	this->webServer = webServer;
 }
 
 Updater::~Updater() {
@@ -29,20 +29,20 @@ void Updater::update(Variator* vario, Instruction* instruction) {
 		JsonObject& parser = JSONBuffer.parseObject(payload);
 		if (!parser.success()) {
 			http.end();
-			server->send(500);
+			webServer->send(500);
 			return;
 		}
 		if (!this->updateSettings(&parser, vario, instruction)) {
 			http.end();
-			server->send(500);
+			webServer->send(500);
 			return;
 		}
 		http.end();
-		server->send(200);
+		webServer->send(200);
 		return;
 	}
 	http.end();
-	server->send(500);
+	webServer->send(500);
 }
 
 bool Updater::updateSettings(JsonObject* parser, Variator* vario,
@@ -55,8 +55,8 @@ bool Updater::updateSettings(JsonObject* parser, Variator* vario,
 
 }
 
-void Updater::setServer(char* server) {
-	this->URI = server;
+void Updater::setServer(char* webServerURI) {
+	this->URI = webServerURI;
 }
 void Updater::setPort(int port) {
 	this->port = port;
@@ -68,12 +68,11 @@ int Updater::getPort() {
 	return this->port;
 }
 
-void Updater::setServer(ESP8266WebServer* server) {
-	this->server = server;
+void Updater::setServer(ESP8266WebServer* webserver) {
+	this->webServer = webserver;
 }
 ESP8266WebServer* Updater::getServer() {
-	return this->server;
+	return this->webServer;
 }
-
 //TODO use ArduinoJson (https://github.com/bblanchon/ArduinoJson) to parse JSON.
 //TODO create the functions that will parse a json answer containing all settings: variator cycle, pins used, instructed, default, next default update - https://techtutorialsx.com/2016/07/17/esp8266-http-get-requests/

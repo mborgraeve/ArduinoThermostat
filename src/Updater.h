@@ -16,10 +16,10 @@
 
 class Updater {
 public:
-	Updater(ESP8266WebServer* server, char* URI, int port);
+	Updater(ESP8266WebServer* webServer, char* URI, int port);
 	virtual ~Updater();
 	void update(Variator* vario, Instruction* instruction);
-	void setServer(char* server);
+	void setServer(char* webServerURI);
 	void setPort(int port);
 	char* getURI();
 	int getPort();
@@ -28,7 +28,7 @@ public:
 private:
 	char* URI;
 	int port;
-	ESP8266WebServer* server;
+	ESP8266WebServer* webServer;
 	StaticJsonBuffer<300> JSONBuffer;
 	static bool updateSettings(JsonObject* parser, Variator* vario, Instruction* instruction);
 

@@ -20,7 +20,7 @@
 const char* ssid = "BandelBorgraeveBGN"; // remplacer par le SSID de votre WiFi
 const char* password = "coucoucnous"; // remplacer par le mot de passe de votre WiFi
 Timer* timer;
-ESP8266WebServer server(80); // on instancie un serveur ecoutant sur le port 80
+ESP8266WebServer wServer(80); // on instancie un serveur ecoutant sur le port 80
 char answerBuffer[250];
 char serverBuffer[250];
 
@@ -60,7 +60,7 @@ void setup(void) {
 
 	vario = new Variator(0, 60, VARIO_PIN);
 
-	server.on("/all", []() {
+	wServer.on("/all", []() {
 		PString answer(answerBuffer, sizeof(answerBuffer));
 		answer.print("{\"Temperature\":");
 		answer.print(smoother->readTemperature());
@@ -81,9 +81,9 @@ void setup(void) {
 		answer.print("},\"Time\":");
 		answer.print(timer->n());
 		answer.print("}");
-		server.send(200, "text/plain", answerBuffer);
+		wServer.send(200, "text/plain", answerBuffer);
 	});
-	server.on("/update", []() {
+	wServer.on("/update", []() {
 		PString answer(serverBuffer, sizeof(serverBuffer));
 		HTTPClient http;
 		http.begin("192.168.0.184",8080);
@@ -97,16 +97,16 @@ void setup(void) {
 			Serial.println(payload);
 		}
 		http.end();
-		server.send(200);
+		wServer.send(200);
 //TODO here call for update from local server.
 		});
-	server.begin();
+	wServer.begin();
 }
 void loop(void) {
 	// a chaque iteration, on appelle handleClient pour que les requetes soient traitees
 	//timer.dayStr(timer.day());
 	delay(1000);
-	server.handleClient();
+	wServer.handleClient();
 	smoother->update();
 	vario->setRatio(instruction->getPower(smoother));
 	vario->update();

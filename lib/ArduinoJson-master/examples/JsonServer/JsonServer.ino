@@ -8,7 +8,7 @@
 
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
 IPAddress ip(192, 168, 0, 177);
-EthernetServer server(80);
+EthernetServer wServer(80);
 
 bool readRequest(EthernetClient& client) {
   bool currentLineIsBlank = true;
@@ -56,11 +56,11 @@ void writeResponse(EthernetClient& client, JsonObject& json) {
 
 void setup() {
   Ethernet.begin(mac, ip);
-  server.begin();
+  wServer.begin();
 }
 
 void loop() {
-  EthernetClient client = server.available();
+  EthernetClient client = wServer.available();
   if (client) {
     bool success = readRequest(client);
     if (success) {
