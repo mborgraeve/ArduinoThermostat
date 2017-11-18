@@ -16,18 +16,22 @@
 #define DHT11_PIN 2
 #define DHTTYPE DHT11
 #define VARIO_PIN 0
+#define SETTINGS_SERVER_URI "192.168.0.184"
+#define SETTINGS_SERVER_PORT 8080
+#define SETTINGS_SERVER_UPDATE_DELAY 600
 
 const char* ssid = "BandelBorgraeveBGN"; // remplacer par le SSID de votre WiFi
 const char* password = "coucoucnous"; // remplacer par le mot de passe de votre WiFi
 Timer* timer;
-ESP8266WebServer wServer(80); // on instancie un serveur ecoutant sur le port 80
+ESP8266WebServer* wServer; // on instancie un serveur ecoutant sur le port 80
 char answerBuffer[250];
-char serverBuffer[250];
+//char serverBuffer[250];
 
 DHT* dht;
 Instruction* instruction;
 DHTSmoother* smoother;
 Variator* vario;
+Updater* updater;
 
 void setup(void) {
 	//TODO Create a webserver that will trigger a call to retrieve settings from settings server.
@@ -36,6 +40,7 @@ void setup(void) {
 	Serial.println("Initializing...");
 	//DHT pin
 	pinMode(DHT11_PIN, INPUT);
+	wServer = new ESP8266WebServer(80);
 	//WIFI
 	WiFi.begin(ssid, password);
 	while (WiFi.status() != WL_CONNECTED) {
@@ -60,7 +65,10 @@ void setup(void) {
 
 	vario = new Variator(0, 60, VARIO_PIN);
 
-	wServer.on("/all", []() {
+	updater = new Updater(wServer, &SETTINGS_SERVER_URI[0], timer,
+			SETTINGS_SERVER_PORT, SETTINGS_SERVER_UPDATE_DELAY);
+
+	wServer->on("/all", []() {
 		PString answer(answerBuffer, sizeof(answerBuffer));
 		answer.print("{\"Temperature\":");
 		answer.print(smoother->readTemperature());
@@ -80,34 +88,26 @@ void setup(void) {
 		answer.print(vario->getRatio());
 		answer.print("},\"Time\":");
 		answer.print(timer->n());
+		answer.print(",\"UpdateDelay\":");
+		answer.print(updater->getUpdateDelay());
 		answer.print("}");
-		wServer.send(200, "text/plain", answerBuffer);
+		wServer->send(200, "text/plain", answerBuffer);
 	});
-	wServer.on("/update", []() {
-		PString answer(serverBuffer, sizeof(serverBuffer));
-		HTTPClient http;
-		http.begin("192.168.0.184",8080);
-		Serial.println("before get");
-		int httpCode = http.GET();
-		Serial.println("HTTPCode:");
-		Serial.println(httpCode);
-		if (httpCode > 0) {
-			String payload = http.getString();
-			answer.println(payload);
-			Serial.println(payload);
-		}
-		http.end();
-		wServer.send(200);
+	wServer->on("/update", []() {
+
+		wServer->send(200, "text/plain", String(updater->forceUpdate(vario, instruction)));
 //TODO here call for update from local server.
 		});
-	wServer.begin();
+	wServer->begin();
 }
 void loop(void) {
 	// a chaque iteration, on appelle handleClient pour que les requetes soient traitees
 	//timer.dayStr(timer.day());
 	delay(1000);
-	wServer.handleClient();
+	wServer->handleClient();
 	smoother->update();
+	updater->update(vario, instruction);
 	vario->setRatio(instruction->getPower(smoother));
 	vario->update();
+
 }

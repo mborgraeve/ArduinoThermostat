@@ -13,24 +13,38 @@
 #include <ESP8266WebServer.h>
 #include "Variator.h"
 #include "Instruction.h"
+#include "Timer.h"
 
 class Updater {
 public:
-	Updater(ESP8266WebServer* webServer, char* URI, int port);
+	Updater(ESP8266WebServer* webServer, const char* URI, Timer* timer,
+			int port, time_t updateDelay);
 	virtual ~Updater();
-	void update(Variator* vario, Instruction* instruction);
+	int forceUpdate(Variator* vario, Instruction* instruction);
+	int update(Variator* vario, Instruction* instruction);
 	void setServer(char* webServerURI);
 	void setPort(int port);
-	char* getURI();
+	const char* getURI();
 	int getPort();
 	ESP8266WebServer* getServer();
 	void setServer(ESP8266WebServer* server);
+	void setUpdateDelay(time_t delay);
+	time_t getUpdateDelay();
+	static const int RETURN_CODE_OK=0;
+	static const int RETURN_CODE_OK_NOT_UPDATED=1;
+	static const int RETURN_CODE_PARSING_FAILED =10;
+	static const int RETURN_CODE_UPDATE_FAILED =11;
+	static const int RETURN_CODE_OTHER_FAILURE = 12;
 private:
-	char* URI;
+	time_t updateDelay;
+	time_t lastUpdate;
+	const char* URI;
 	int port;
 	ESP8266WebServer* webServer;
 	StaticJsonBuffer<300> JSONBuffer;
-	static bool updateSettings(JsonObject* parser, Variator* vario, Instruction* instruction);
+	Timer* timer;
+	bool updateSettings(JsonObject* parser, Variator* vario,
+			Instruction* instruction);
 
 };
 
