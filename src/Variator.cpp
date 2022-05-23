@@ -5,7 +5,7 @@
  *      Author: Matthieu
  */
 
-#include <Variator.h>
+#include "Variator.h"
 
 Variator::Variator() {
 }

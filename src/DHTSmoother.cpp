@@ -5,7 +5,7 @@
  *      Author: Matthieu
  */
 
-#include <DHTSmoother.h>
+#include "DHTSmoother.h"
 
 float smoothedTemperature = -1;
 float smoothedHumidity = -1;

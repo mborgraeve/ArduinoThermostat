@@ -7,7 +7,7 @@
 
 #ifndef SRC_DHTSMOOTHER_H_
 #define SRC_DHTSMOOTHER_H_
-#include <DHT.h>
+#include "DHT.h"
 #include "Timer.h"
 
 class DHTSmoother {

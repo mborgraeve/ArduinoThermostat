@@ -5,7 +5,7 @@
  *      Author: Matthieu
  */
 
-#include <Instruction.h>
+#include "Instruction.h"
 
 float defaultTemperature = 13.0;
 float instructedTemperature = 16.0;

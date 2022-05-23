@@ -8,9 +8,9 @@
 #ifndef SRC_TIMER_H_
 #define SRC_TIMER_H_
 
-#include <NTPClient.h>
+#include "NTPClient.h"
 #include <WiFiUdp.h>
-#include <TimeLib.h>
+#include "TimeLib.h"
 #include <Arduino.h>
 
 class Timer {

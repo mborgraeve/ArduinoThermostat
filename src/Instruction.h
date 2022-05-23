@@ -7,7 +7,7 @@
 
 #ifndef SRC_INSTRUCTION_H_
 #define SRC_INSTRUCTION_H_
-#include "timer.h"
+#include "Timer.h"
 #include "DHTSmoother.h"
 
 class Instruction {
