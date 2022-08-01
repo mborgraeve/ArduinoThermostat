@@ -5,6 +5,8 @@
 
 #include "dht.h"
 
+DHT dhtSketchInstance(DHT_PIN, DHT_TYPE);
+
 void setupDht() {
     dhtSketchInstance.begin();
 }
