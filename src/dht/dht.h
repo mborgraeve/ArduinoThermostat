@@ -8,7 +8,6 @@
 
 #if !defined(DHT_PIN) || !defined(DHT_TYPE)
 #error DHT_PIN and DHT_TYPE should be defined.
-
 #endif
 
 #include <Adafruit_Sensor.h>
