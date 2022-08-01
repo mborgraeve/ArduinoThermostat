@@ -18,6 +18,10 @@
 #define MQTT_TOPIC_UPDATE "topicUpdate"
 
 #define DHT_ACTIVE true
-#define DHT11_PIN 2
+#ifdef DHT_ACTIVE
+#include <DHT.h>
+#define DHT_PIN 2
+#define DHT_TYPE DHT22
+#endif //DHT_ACTIVE
 
 #endif //ARDUINOTHERMOSTAT_CONFIGURATION_H

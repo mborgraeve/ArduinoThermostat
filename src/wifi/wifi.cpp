@@ -1,13 +1,12 @@
-//
-// Created by matth on 2022-07-27.
-//
+#include "configuration.h"
+
 #ifdef WIFI_ACTIVE
 #include "wifi.h"
 
 void setupWifi(){
 
     Serial.println("Wifi Initializing");
-    WiFi.begin(SSID, PASSWORD);
+    WiFi.begin(WIFI_SSID, WIFI_PWD);
     while (WiFi.status() != WL_CONNECTED) {
         delay(500);
         Serial.print(".");

@@ -1,3 +1,5 @@
+#include "configuration.h"
+
 #ifdef WIFI_ACTIVE
 
 #if !defined(WIFI_SSID) || !defined(WIFI_PWD)

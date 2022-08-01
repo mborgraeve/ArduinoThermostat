@@ -45,8 +45,6 @@ void loop() {
     getMqttClient()->publish("mytopic/test", "messagePublished from NodeMcu !");
 
     DhtResult dhtTemp = readDht();
-    Serial.println("DHT Check:");
-    Serial.println(dhtTemp.chk);
     Serial.println("Temperature:");
     Serial.println(dhtTemp.temperature);
     Serial.println("Humidity:");

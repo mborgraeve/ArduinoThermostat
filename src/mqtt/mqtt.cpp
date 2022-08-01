@@ -18,4 +18,8 @@ void onConnectionEstablished() {
     getMqttClient()->publish(MQTT_TOPIC_UPDATE, messageStart + MQTT_CLIENT_NAME + messageEnd);
 }
 
+EspMQTTClient* getMqttClient(){
+    return &mqttClient;
+}
+
 #endif //MQTT_ACTIVE

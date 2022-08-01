@@ -13,7 +13,7 @@
 
 EspMQTTClient *getMqttClient();
 
-//void onConnectionEstablished();
+void onConnectionEstablished();
 
 #endif //ARDUINOTHERMOSTAT_MQTT_H
 #endif //MQTT_ACTIVE

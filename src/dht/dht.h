@@ -3,8 +3,8 @@
 
 #ifdef DHT_ACTIVE
 
-#if defined(DHT11_PIN) && defined(DHT_22_PIN) || !defined(DHT11_PIN) && !defined(DHT_22_PIN)
-#error Exactly one of DHT11_PIN or DHT22_PIN should be defined.
+#if !defined(DHT_PIN) || !defined(DHT_TYPE)
+#error DHT_PIN and DHT_TYPE should be defined.
 #endif
 
 #ifndef ARDUINOTHERMOSTAT_DHT_H
@@ -14,11 +14,10 @@
 #include <DHT.h>
 
 struct DhtResult {
-    int temperature;
-    int humidity;
-    int chk;
+    float temperature;
+    float humidity;
 };
-DHT DHT;
+DHT dhtSketchInstance(DHT_PIN, DHT_TYPE);
 
 void setupDht();
 
