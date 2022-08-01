@@ -19,9 +19,7 @@
 ////#define DHTTYPE DHT11
 ////#define VARIO_PIN 0
 //
-////const char* ssid = "BandelBorgraeveBGN"; // remplacer par le SSID de votre WiFi
-////const char* password = "coucoucnous"; // remplacer par le mot de passe de votre WiFi
-////Timer* timer;
+////const char* ssid = "BandelBorgraeveBGN"; // remplacer par le SSID de votre WIFI_ACTIVE////const char* password = "coucoucnous"; // remplacer par le mot de passe de votre WIFI_ACTIVE////Timer* timer;
 ////ESP8266WebServer server(80); // on instancie un serveur ecoutant sur le port 80
 ////char answerBuffer[100];
 ////
