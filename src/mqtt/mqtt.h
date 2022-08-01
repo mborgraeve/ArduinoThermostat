@@ -1,5 +1,5 @@
-//
-// Created by matth on 2022-08-01.
+#include "configuration.h"
+
 #ifdef MQTT_ACTIVE
 
 #if !defined(MQTT_SERVER_HOST) || !defined(MQTT_SERVER_PORT) || !defined(MQTT_USER) || !defined(MQTT_PWD) || !defined(MQTT_CLIENT_NAME) || !defined(MQTT_TOPIC_UPDATE)
@@ -9,7 +9,7 @@
 #ifndef ARDUINOTHERMOSTAT_MQTT_H
 #define ARDUINOTHERMOSTAT_MQTT_H
 
-#include "../../lib/mqtt/src/EspMQTTClient.h"
+#include <EspMQTTClient.h>
 
 EspMQTTClient *getMqttClient();
 

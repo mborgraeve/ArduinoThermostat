@@ -1,0 +1,5 @@
+C:/Users/matth/CLionProjects/ArduinoThermostat/cmake-build-esp01/CMakeFiles/Production.dir
+C:/Users/matth/CLionProjects/ArduinoThermostat/cmake-build-esp01/CMakeFiles/Debug.dir
+C:/Users/matth/CLionProjects/ArduinoThermostat/cmake-build-esp01/CMakeFiles/Z_DUMMY_TARGET.dir
+C:/Users/matth/CLionProjects/ArduinoThermostat/cmake-build-esp01/CMakeFiles/edit_cache.dir
+C:/Users/matth/CLionProjects/ArduinoThermostat/cmake-build-esp01/CMakeFiles/rebuild_cache.dir

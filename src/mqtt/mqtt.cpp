@@ -1,4 +1,8 @@
+#include "configuration.h"
+
 #ifdef MQTT_ACTIVE
+
+#include "mqtt.h"
 
 EspMQTTClient mqttClient(
         MQTT_SERVER_HOST,
@@ -7,7 +11,6 @@ EspMQTTClient mqttClient(
         MQTT_PWD,
         MQTT_CLIENT_NAME
 );
-
 
 void onConnectionEstablished() {
     String messageStart = "Connection established for device [";

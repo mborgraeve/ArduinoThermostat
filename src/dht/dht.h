@@ -1,6 +1,6 @@
-//
-// Created by matth on 2022-07-27.
-//
+
+#include "configuration.h"
+
 #ifdef DHT_ACTIVE
 
 #if defined(DHT11_PIN) && defined(DHT_22_PIN) || !defined(DHT11_PIN) && !defined(DHT_22_PIN)
@@ -9,17 +9,20 @@
 
 #ifndef ARDUINOTHERMOSTAT_DHT_H
 #define ARDUINOTHERMOSTAT_DHT_H
-#include "../lib/DHTLib/dht.h"
 
+#include <Adafruit_Sensor.h>
+#include <DHT.h>
 
-struct DhtResult{
+struct DhtResult {
     int temperature;
     int humidity;
     int chk;
 };
+DHT DHT;
 
 void setupDht();
+
 DhtResult readDht();
 
 #endif //ARDUINOTHERMOSTAT_DHT_H
-#endif //DHT
+#endif //DHT_ACTIVE

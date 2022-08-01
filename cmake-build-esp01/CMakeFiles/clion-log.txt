@@ -1,0 +1,4 @@
+C:\Users\matth\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\222.3345.126\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=esp01 -G "CodeBlocks - MinGW Makefiles" -S C:\Users\matth\CLionProjects\ArduinoThermostat -B C:\Users\matth\CLionProjects\ArduinoThermostat\cmake-build-esp01
+-- Configuring done
+-- Generating done
+-- Build files have been written to: C:/Users/matth/CLionProjects/ArduinoThermostat/cmake-build-esp01
