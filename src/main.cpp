@@ -32,6 +32,7 @@ void setup() {
 }
 
 void loop() {
+    String str = String();
     #ifdef DEBUG
     Serial.println("Looping...");
     #endif //DEBUG
@@ -42,13 +43,17 @@ void loop() {
     Serial.println("Client publish");
     #endif //DEBUG
 
-    getMqttClient()->publish("mytopic/test", "messagePublished from NodeMcu !");
+    getMqttClient()->publish(MQTT_TOPIC_MESSAGES, "messagePublished from NodeMcu !");
 
     DhtResult dhtTemp = readDht();
     Serial.println("Temperature:");
     Serial.println(dhtTemp.temperature);
     Serial.println("Humidity:");
     Serial.println(dhtTemp.humidity);
+
+    getMqttClient()->publish(MQTT_TOPIC_TEMPERATURE, str+dhtTemp.temperature);
+    getMqttClient()->publish(MQTT_TOPIC_HUMIDITY, str+dhtTemp.humidity);
+
     Serial.println("Client loop");
 
     getMqttClient()->loop();

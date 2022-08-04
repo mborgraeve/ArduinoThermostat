@@ -16,12 +16,15 @@
 #define MQTT_PWD "Kz2kXddmXz4n39AXM97i"
 #define MQTT_CLIENT_NAME "nodeMcuTest"
 #define MQTT_TOPIC_UPDATE "topicUpdate"
+#define MQTT_TOPIC_MESSAGES "mytopic/test"
+#define MQTT_TOPIC_TEMPERATURE "test.temperature"
+#define MQTT_TOPIC_HUMIDITY "test.humidity"
 
 #define DHT_ACTIVE true
 #ifdef DHT_ACTIVE
 #include <DHT.h>
 #define DHT_PIN 2
-#define DHT_TYPE DHT22
+#define DHT_TYPE DHT11
 #endif //DHT_ACTIVE
 
 #endif //ARDUINOTHERMOSTAT_CONFIGURATION_H
