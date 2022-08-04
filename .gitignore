@@ -34,9 +34,10 @@
 
 # Clion
 .idea/
-cmake-build-debug/
 .pioenvs
 .piolibdeps
+cmake-build-debug/**
+cmake-build-esp01/**
 
 # platformio
 .pioenvs/
@@ -48,3 +49,6 @@ cmake-build-debug/
 .setting/
 .project
 .travis.yml
+
+platform.io
+.pio/**
