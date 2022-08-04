@@ -1,7 +1,6 @@
 #include <Arduino.h>
 #include "configuration.h"
 
-
 #ifdef WIFI_ACTIVE
 #include "wifi/wifi.h"
 #endif //WIFI_ACTIVE
@@ -13,7 +12,6 @@
 #ifdef DHT_ACTIVE
 #include "./dht/dht.h"
 #endif //DHT_ACTIVE
-
 
 void setup() {
     Serial.begin(BAUD_RATE);
@@ -32,7 +30,6 @@ void setup() {
 }
 
 void loop() {
-    String str = String();
     #ifdef DEBUG
     Serial.println("Looping...");
     #endif //DEBUG
@@ -41,24 +38,26 @@ void loop() {
 
     #ifdef DEBUG
     Serial.println("Client publish");
+    getMqttClient()->publish(MQTT_TOPIC_MESSAGES, "messagePublished from NodeMcu !");
     #endif //DEBUG
 
-    getMqttClient()->publish(MQTT_TOPIC_MESSAGES, "messagePublished from NodeMcu !");
-
     DhtResult dhtTemp = readDht();
+
+    #ifdef DEBUG
     Serial.println("Temperature:");
     Serial.println(dhtTemp.temperature);
     Serial.println("Humidity:");
     Serial.println(dhtTemp.humidity);
+    #endif //DEBUG
 
-    getMqttClient()->publish(MQTT_TOPIC_TEMPERATURE, str+dhtTemp.temperature);
-    getMqttClient()->publish(MQTT_TOPIC_HUMIDITY, str+dhtTemp.humidity);
+    getMqttClient()->publish(MQTT_TOPIC_TEMPERATURE, String(dhtTemp.temperature));
+    getMqttClient()->publish(MQTT_TOPIC_HUMIDITY, String(dhtTemp.humidity));
 
+    #ifdef DEBUG
     Serial.println("Client loop");
-
+    #endif //DEBUG
     getMqttClient()->loop();
 
-    delay(2000);
     digitalWrite(LED_BUILTIN, LOW);
-    delay(3000);
+    delay(SLEEP_TIME);
 }

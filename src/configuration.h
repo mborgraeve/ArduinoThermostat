@@ -4,7 +4,8 @@
 
 
 #define BAUD_RATE 115200
-#define DEBUG true
+#define SLEEP_TIME 60e3
+//#define DEBUG true
 #define WIFI_ACTIVE true
 #define WIFI_SSID "BandelBorgraeveAN"
 #define WIFI_PWD "coucoucnous"
