@@ -4,8 +4,18 @@
 
 
 #define BAUD_RATE 115200
-#define SLEEP_TIME 60e3
+#define USER_LOOP_TIME 60e3
+#define SLEEP_TIME 1000
+#define LED_UP_TIME 200
 //#define DEBUG true
+#define REMAINING_SLEEP_TIME SLEEP_TIME - LED_UP_TIME
+
+#ifdef DEBUG
+#define LOG_IF_DEBUG(l){Serial.println(l);}
+#else
+#define LOG_IF_DEBUG(l){}
+#endif // DEBUG
+
 #define WIFI_ACTIVE true
 #define WIFI_SSID "BandelBorgraeveAN"
 #define WIFI_PWD "coucoucnous"

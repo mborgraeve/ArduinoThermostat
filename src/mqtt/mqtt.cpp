@@ -18,6 +18,12 @@ void onConnectionEstablished() {
     getMqttClient()->publish(MQTT_TOPIC_UPDATE, messageStart + MQTT_CLIENT_NAME + messageEnd);
 }
 
+void setupMqtt() {
+    #ifdef DEBUG
+    getMqttClient()->enableDebuggingMessages(true);
+    #endif //DEBUG
+}
+
 EspMQTTClient* getMqttClient(){
     return &mqttClient;
 }
