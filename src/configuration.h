@@ -4,9 +4,9 @@
 
 
 #define BAUD_RATE 115200
-#define USER_LOOP_TIME 60e3
+#define USER_LOOP_TIME 10e3 //10s
 #define SLEEP_TIME 1000
-#define LED_UP_TIME 200
+#define LED_UP_TIME 600
 //#define DEBUG true
 #define REMAINING_SLEEP_TIME SLEEP_TIME - LED_UP_TIME
 
@@ -35,7 +35,12 @@
 #ifdef DHT_ACTIVE
 #include <DHT.h>
 #define DHT_PIN 2
-#define DHT_TYPE DHT11
+#define DHT_TYPE DHT22
 #endif //DHT_ACTIVE
+
+#define THERMOSTAT_ACTIVE true
+#ifdef THERMOSTAT_ACTIVE
+#define THERMOSTAT_CONTROL_PIN 14
+#endif //THERMOSTAT_ACTIVE
 
 #endif //ARDUINOTHERMOSTAT_CONFIGURATION_H

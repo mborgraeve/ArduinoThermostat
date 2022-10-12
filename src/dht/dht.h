@@ -1,4 +1,3 @@
-
 #include "configuration.h"
 
 #ifdef DHT_ACTIVE

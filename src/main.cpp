@@ -13,6 +13,10 @@
 #include "./dht/dht.h"
 #endif //DHT_ACTIVE
 
+#ifdef THERMOSTAT_ACTIVE
+#include "./thermostat/thermostat.h"
+#endif //THERMOSTAT_ACTIVE
+
 void setup() {
     Serial.begin(BAUD_RATE);
     Serial.println("Initializing...");
@@ -30,6 +34,10 @@ void setup() {
     #ifdef MQTT_ACTIVE
     setupMqtt();
     #endif //MQTT_ACTIVE
+
+    #ifdef THERMOSTAT_ACTIVE
+    setupThermostat();
+    #endif //THERMOSTAT_ACTIVE
 
     Serial.println("Finished initializing...");
 }
@@ -75,6 +83,9 @@ void loop() {
         getMqttClient()->publish(MQTT_TOPIC_TEMPERATURE, temp);
         getMqttClient()->publish(MQTT_TOPIC_HUMIDITY, hum);
 
+        #ifdef THERMOSTAT_ACTIVE
+        loopThermostat();
+        #endif //THERMOSTAT_ACTIVE
     }
     LOG_IF_DEBUG("Mqtt loop");
     getMqttClient()->loop();
