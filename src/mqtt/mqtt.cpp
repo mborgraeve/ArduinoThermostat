@@ -19,9 +19,9 @@ void onConnectionEstablished() {
 }
 
 void setupMqtt() {
-    #ifdef DEBUG
+    #ifdef DEBUG_TRACE
     getMqttClient()->enableDebuggingMessages(true);
-    #endif //DEBUG
+    #endif //TRACE
 }
 
 EspMQTTClient* getMqttClient(){

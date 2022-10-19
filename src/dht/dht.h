@@ -1,6 +1,7 @@
 #include "configuration.h"
 
 #ifdef DHT_ACTIVE
+#include <DHT.h>
 
 #ifndef ARDUINOTHERMOSTAT_DHT_H
 #define ARDUINOTHERMOSTAT_DHT_H

@@ -5,22 +5,41 @@
 
 #define BAUD_RATE 115200
 #define USER_LOOP_TIME 10e3 //10s
-#define SLEEP_TIME 1000
-#define LED_UP_TIME 600
-//#define DEBUG true
+#define SLEEP_TIME 100
+#define LED_UP_TIME 50
+#define DEBUG_SERIAL
+//#define DEBUG_TRACE
+#define DEBUG_LED
 #define REMAINING_SLEEP_TIME SLEEP_TIME - LED_UP_TIME
 
-#ifdef DEBUG
-#define LOG_IF_DEBUG(l){Serial.println(l);}
+#ifdef DEBUG_SERIAL
+#define LOG_IF_DEBUG_LN(l){Serial.println(l);}
+#define LOG_IF_DEBUG(l){Serial.print(l);}
+    #ifdef DEBUG_TRACE
+        #define TRACE(l) LOG_IF_DEBUG(l)
+        #define TRACE_LN(l)  LOG_IF_DEBUG_LN(l)
+    #else
+        #define TRACE(l){}
+        #define TRACE_LN(l){}
+    #endif //DEBUG_TRACE
 #else
+#define LOG_IF_DEBUG_LN(l){}
 #define LOG_IF_DEBUG(l){}
-#endif // DEBUG
+#define TRACE(l){}
+#define TRACE_LN(l){}
+#endif // DEBUG_SERIAL
 
-#define WIFI_ACTIVE true
+#ifdef DEBUG_LED
+#define PIN_LED 16
+#endif //DEBUG_LED
+#define MIN(a, b) a < b ? a : b
+#define MAX(a, b) a < b ? b : a
+
+#define WIFI_ACTIVE
 #define WIFI_SSID "BandelBorgraeveAN"
 #define WIFI_PWD "coucoucnous"
 
-#define MQTT_ACTIVE true
+#define MQTT_ACTIVE
 #define MQTT_SERVER_HOST "10.0.0.223"
 #define MQTT_SERVER_PORT 1883
 #define MQTT_USER "mqtt"
@@ -28,19 +47,32 @@
 #define MQTT_CLIENT_NAME "nodeMcuTest"
 #define MQTT_TOPIC_UPDATE "topicUpdate"
 #define MQTT_TOPIC_MESSAGES "mytopic/test"
-#define MQTT_TOPIC_TEMPERATURE "test.temperature"
-#define MQTT_TOPIC_HUMIDITY "test.humidity"
+#define MQTT_TOPIC_TEMPERATURE "room_1.temperature"
+#define MQTT_TOPIC_HUMIDITY "room_1.humidity"
+#define MQTT_TOPIC_THERMOSTAT_TEMPERATURE "test.thermostat.temperature"
+#define MQTT_TOPIC_THERMOSTAT_HEATING "test.thermostat.heating"
+#define MQTT_SUBSCRIBE_TIMEOUT 1200
 
-#define DHT_ACTIVE true
+#define DHT_ACTIVE
 #ifdef DHT_ACTIVE
-#include <DHT.h>
-#define DHT_PIN 2
+#define DHT_PIN 4
 #define DHT_TYPE DHT22
 #endif //DHT_ACTIVE
 
-#define THERMOSTAT_ACTIVE true
+#define THERMOSTAT_ACTIVE
 #ifdef THERMOSTAT_ACTIVE
-#define THERMOSTAT_CONTROL_PIN 14
+#define THERMOSTAT_CONTROL_PIN 5
+#define ALPHA 0.01
+#define UPDATE_DELAY 1
+#define DEFAULT_TARGET 13.0
+#define HYSTERESIS_DELTA 1.0
+#define INITIAL_VALUE 15
+#define TARGET_TEMPERATURE_TOPIC "test.target.temperature"
 #endif //THERMOSTAT_ACTIVE
+
+#define TIMER_ACTIVE
+#ifdef TIMER_ACTIVE
+#define TIME_SERVER "us.pool.ntp.org"
+#endif //TIMER_ACTIVE
 
 #endif //ARDUINOTHERMOSTAT_CONFIGURATION_H

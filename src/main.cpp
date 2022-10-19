@@ -15,13 +15,20 @@
 
 #ifdef THERMOSTAT_ACTIVE
 #include "./thermostat/thermostat.h"
+
+Thermostat *thermostat;
+Timer *timer;
 #endif //THERMOSTAT_ACTIVE
+
+void subscribeThermostat();
+
+bool doSubscribe();
 
 void setup() {
     Serial.begin(BAUD_RATE);
     Serial.println("Initializing...");
 
-    pinMode(LED_BUILTIN, OUTPUT);
+    pinMode(PIN_LED, OUTPUT);
 
     #ifdef DHT_ACTIVE
     setupDht();
@@ -35,23 +42,56 @@ void setup() {
     setupMqtt();
     #endif //MQTT_ACTIVE
 
+    #ifdef TIMER_ACTIVE
+    timer = new Timer();
+    #endif //TIMER_ACTIVE
+
     #ifdef THERMOSTAT_ACTIVE
-    setupThermostat();
+    thermostat = new Thermostat(timer);
+        #ifdef MQTT_ACTIVE
+    subscribeThermostat();
+        #endif //MQTT_ACTIVE
     #endif //THERMOSTAT_ACTIVE
 
     Serial.println("Finished initializing...");
 }
 
+void subscribeThermostat() {
+    getMqttClient()->loop();
+    //wait for MQTT connection to be OK for max 30s
+    LOG_IF_DEBUG_LN("Subscribing...")
+    int counter = 0;
+    bool subscribed = false;
+    do {
+        LOG_IF_DEBUG(".")
+        counter++;
+        getMqttClient()->loop();
+        subscribed = doSubscribe();
+        delay(25);
+    }while (!subscribed && counter < MQTT_SUBSCRIBE_TIMEOUT);
+    LOG_IF_DEBUG_LN("")
+    LOG_IF_DEBUG("Subscribed:")
+    LOG_IF_DEBUG_LN(subscribed)
+}
+
+bool doSubscribe() {
+    return getMqttClient()->subscribe(TARGET_TEMPERATURE_TOPIC, [](const String &payload) {
+            LOG_IF_DEBUG_LN("Received new target temperature:")
+            LOG_IF_DEBUG_LN(payload)
+            thermostat->updateTargetTemperature(payload.toFloat());
+        });
+}
+
 
 void switchLedAndDelay() {
-    #ifdef DEBUG
-    digitalWrite(LED_BUILTIN, HIGH);
+    #ifdef DEBUG_LED
+    digitalWrite(PIN_LED, HIGH);
     delay(LED_UP_TIME);
-    digitalWrite(LED_BUILTIN, LOW);
+    digitalWrite(PIN_LED, LOW);
     delay(REMAINING_SLEEP_TIME);
     #else
     delay(SLEEP_TIME);
-    #endif //DEBUG
+    #endif //DEBUG_LED
 }
 
 short counter = 0;
@@ -59,37 +99,39 @@ short counter = 0;
 void loop() {
     if (counter * SLEEP_TIME < USER_LOOP_TIME) {
         ++counter;
-        LOG_IF_DEBUG("skipping...");
+        TRACE_LN("skipping...");
     } else {
         counter = 0;
-        LOG_IF_DEBUG("Looping...");
+        LOG_IF_DEBUG_LN("Looping...");
 
-        digitalWrite(LED_BUILTIN, HIGH);
+        digitalWrite(PIN_LED, HIGH);
 
-        #ifdef DEBUG
-        LOG_IF_DEBUG("Client publish");
+        #ifdef DEBUG_SERIAL
+        LOG_IF_DEBUG_LN("Client publish");
         getMqttClient()->publish(MQTT_TOPIC_MESSAGES, "messagePublished from NodeMcu !");
-        #endif //DEBUG
+        #endif //DEBUG_SERIAL
 
         DhtResult dhtTemp = readDht();
         String temp = String(dhtTemp.temperature);
         String hum = String(dhtTemp.humidity);
 
         LOG_IF_DEBUG("Temperature:");
-        LOG_IF_DEBUG(temp);
+        LOG_IF_DEBUG_LN(temp);
         LOG_IF_DEBUG("Humidity:");
-        LOG_IF_DEBUG(hum);
+        LOG_IF_DEBUG_LN(hum);
 
         getMqttClient()->publish(MQTT_TOPIC_TEMPERATURE, temp);
         getMqttClient()->publish(MQTT_TOPIC_HUMIDITY, hum);
 
         #ifdef THERMOSTAT_ACTIVE
-        loopThermostat();
+        thermostat->loop(dhtTemp.temperature);
+        getMqttClient()->publish(MQTT_TOPIC_THERMOSTAT_TEMPERATURE, String(thermostat->readValue()));
+        getMqttClient()->publish(MQTT_TOPIC_THERMOSTAT_HEATING, String(thermostat->shouldHeat()));
         #endif //THERMOSTAT_ACTIVE
     }
-    LOG_IF_DEBUG("Mqtt loop");
+    TRACE("Mqtt loop");
     getMqttClient()->loop();
     switchLedAndDelay();
-    LOG_IF_DEBUG("End of loop.")
+    TRACE("End of loop.")
 }
 
