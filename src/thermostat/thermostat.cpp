@@ -57,7 +57,7 @@ bool Thermostat::shouldHeat() const {
 }
 
 void Thermostat::updateTargetTemperature(float temperature) {
-    this->target = MIN(temperature, DEFAULT_TARGET);
+    this->target = MAX(temperature, DEFAULT_TARGET);
 }
 
 #endif //THERMOSTAT_ACTIVE

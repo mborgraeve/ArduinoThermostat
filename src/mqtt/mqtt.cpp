@@ -21,7 +21,11 @@ void onConnectionEstablished() {
 void setupMqtt() {
     #ifdef DEBUG_TRACE
     getMqttClient()->enableDebuggingMessages(true);
-    #endif //TRACE
+    #endif //DEBUG_TRACE
+    #ifdef DEBUG_SERIAL
+    getMqttClient()->enableDebuggingMessages(true);
+    #endif //DEBUG_SERIAL
+    getMqttClient()->setMqttReconnectionAttemptDelay(MQTT_RECONNECT_DELAY_MS);
 }
 
 EspMQTTClient* getMqttClient(){

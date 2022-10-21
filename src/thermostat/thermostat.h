@@ -4,8 +4,10 @@
 #include "timer/Timer.h"
 #include <algorithm>
 #if !defined(THERMOSTAT_CONTROL_PIN)
-
 #error "Thermostat control pin should be set"
+#endif
+#if !defined(TIMER_ACTIVE)
+#error "Thermostat require a timer"
 #endif
 
 #if !defined(TIME_SERVER)

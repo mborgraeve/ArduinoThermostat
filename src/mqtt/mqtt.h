@@ -9,6 +9,7 @@
 #ifndef ARDUINOTHERMOSTAT_MQTT_H
 #define ARDUINOTHERMOSTAT_MQTT_H
 
+
 #include <EspMQTTClient.h>
 
 EspMQTTClient *getMqttClient();

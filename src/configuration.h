@@ -5,8 +5,8 @@
 
 #define BAUD_RATE 115200
 #define USER_LOOP_TIME 10e3 //10s
-#define SLEEP_TIME 100
-#define LED_UP_TIME 50
+#define SLEEP_TIME 10
+#define LED_UP_TIME 5
 #define DEBUG_SERIAL
 //#define DEBUG_TRACE
 #define DEBUG_LED
@@ -49,9 +49,7 @@
 #define MQTT_TOPIC_MESSAGES "mytopic/test"
 #define MQTT_TOPIC_TEMPERATURE "room_1.temperature"
 #define MQTT_TOPIC_HUMIDITY "room_1.humidity"
-#define MQTT_TOPIC_THERMOSTAT_TEMPERATURE "test.thermostat.temperature"
-#define MQTT_TOPIC_THERMOSTAT_HEATING "test.thermostat.heating"
-#define MQTT_SUBSCRIBE_TIMEOUT 1200
+#define MQTT_RECONNECT_DELAY_MS 500
 
 #define DHT_ACTIVE
 #ifdef DHT_ACTIVE
@@ -67,8 +65,15 @@
 #define DEFAULT_TARGET 13.0
 #define HYSTERESIS_DELTA 1.0
 #define INITIAL_VALUE 15
+    #ifdef MQTT_ACTIVE
 #define TARGET_TEMPERATURE_TOPIC "test.target.temperature"
+    #endif //MQTT_ACTIVE
 #endif //THERMOSTAT_ACTIVE
+
+#ifdef THERMOSTAT_ACTIVE
+#define MQTT_TOPIC_THERMOSTAT_TEMPERATURE "test.thermostat.temperature"
+#define MQTT_TOPIC_THERMOSTAT_HEATING "test.thermostat.heating"
+#endif //THERMOSTAT ACTIVE
 
 #define TIMER_ACTIVE
 #ifdef TIMER_ACTIVE

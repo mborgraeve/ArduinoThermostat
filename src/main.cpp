@@ -55,33 +55,17 @@ void setup() {
 
     Serial.println("Finished initializing...");
 }
-
+#ifdef THERMOSTAT_ACTIVE
 void subscribeThermostat() {
-    getMqttClient()->loop();
-    //wait for MQTT connection to be OK for max 30s
-    LOG_IF_DEBUG_LN("Subscribing...")
-    int counter = 0;
-    bool subscribed = false;
-    do {
-        LOG_IF_DEBUG(".")
-        counter++;
-        getMqttClient()->loop();
-        subscribed = doSubscribe();
-        delay(25);
-    }while (!subscribed && counter < MQTT_SUBSCRIBE_TIMEOUT);
-    LOG_IF_DEBUG_LN("")
-    LOG_IF_DEBUG("Subscribed:")
-    LOG_IF_DEBUG_LN(subscribed)
-}
-
-bool doSubscribe() {
-    return getMqttClient()->subscribe(TARGET_TEMPERATURE_TOPIC, [](const String &payload) {
+    getMqttClient()->setOnConnectionEstablishedCallback([]() {
+        getMqttClient()->subscribe(TARGET_TEMPERATURE_TOPIC, [](const String &payload) {
             LOG_IF_DEBUG_LN("Received new target temperature:")
             LOG_IF_DEBUG_LN(payload)
             thermostat->updateTargetTemperature(payload.toFloat());
         });
+    });
 }
-
+#endif //THERMOSTAT_ACTIVE
 
 void switchLedAndDelay() {
     #ifdef DEBUG_LED
@@ -128,6 +112,7 @@ void loop() {
         getMqttClient()->publish(MQTT_TOPIC_THERMOSTAT_TEMPERATURE, String(thermostat->readValue()));
         getMqttClient()->publish(MQTT_TOPIC_THERMOSTAT_HEATING, String(thermostat->shouldHeat()));
         #endif //THERMOSTAT_ACTIVE
+        LOG_IF_DEBUG_LN("-----------------------------------------------------------------------------------")
     }
     TRACE("Mqtt loop");
     getMqttClient()->loop();
