@@ -28,7 +28,9 @@ void setup() {
     Serial.begin(BAUD_RATE);
     Serial.println("Initializing...");
 
+    #ifdef DEBUG_LED
     pinMode(PIN_LED, OUTPUT);
+    #endif //DEBUG_LED
 
     #ifdef DHT_ACTIVE
     setupDht();
@@ -88,7 +90,9 @@ void loop() {
         counter = 0;
         LOG_IF_DEBUG_LN("Looping...");
 
+        #ifdef LED_DEBUG
         digitalWrite(PIN_LED, HIGH);
+        #endif //LED_DEBUG
 
         #ifdef DEBUG_SERIAL
         LOG_IF_DEBUG_LN("Client publish");

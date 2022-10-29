@@ -7,9 +7,9 @@
 #define USER_LOOP_TIME 10e3 //10s
 #define SLEEP_TIME 10
 #define LED_UP_TIME 5
-#define DEBUG_SERIAL
+//#define DEBUG_SERIAL
 //#define DEBUG_TRACE
-#define DEBUG_LED
+//#define DEBUG_LED
 #define REMAINING_SLEEP_TIME SLEEP_TIME - LED_UP_TIME
 
 #ifdef DEBUG_SERIAL
@@ -57,10 +57,10 @@
 #define DHT_TYPE DHT22
 #endif //DHT_ACTIVE
 
-#define THERMOSTAT_ACTIVE
+//#define THERMOSTAT_ACTIVE
 #ifdef THERMOSTAT_ACTIVE
 #define THERMOSTAT_CONTROL_PIN 5
-#define ALPHA 0.01
+#define ALPHA 0.05
 #define UPDATE_DELAY 1
 #define DEFAULT_TARGET 13.0
 #define HYSTERESIS_DELTA 1.0
@@ -75,7 +75,7 @@
 #define MQTT_TOPIC_THERMOSTAT_HEATING "test.thermostat.heating"
 #endif //THERMOSTAT ACTIVE
 
-#define TIMER_ACTIVE
+//#define TIMER_ACTIVE
 #ifdef TIMER_ACTIVE
 #define TIME_SERVER "us.pool.ntp.org"
 #endif //TIMER_ACTIVE
