@@ -79,11 +79,11 @@
     #define HYSTERESIS_DELTA 1.0
     #define INITIAL_VALUE 15
     #ifdef MQTT_ACTIVE
-        #define TARGET_TEMPERATURE_TOPIC LOCATION+".target.temperature"
+        #define TARGET_TEMPERATURE_TOPIC LOCATION ".target.temperature"
     #endif //MQTT_ACTIVE
-    #define MQTT_TOPIC_THERMOSTAT_TEMPERATURE LOCATION+".thermostat.temperature"
-    #define MQTT_TOPIC_THERMOSTAT_HEATING LOCATION+".thermostat.heating"
-#endif //THERMOSTAT ACTIVE
+    #define MQTT_TOPIC_THERMOSTAT_TEMPERATURE LOCATION ".thermostat.temperature"
+    #define MQTT_TOPIC_THERMOSTAT_HEATING LOCATION ".thermostat.heating"
+#endif //THERMOSTAT_ACTIVE
 
 // TIMER --------------------------------------
 #ifdef TIMER_ACTIVE
