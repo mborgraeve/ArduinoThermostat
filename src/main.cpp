@@ -26,9 +26,9 @@ bool doSubscribe();
 
 void resetLoop();
 
-#ifdef RESET
+#ifdef RESET_ACTIVE
 int loopsBeforeReset = USER_LOOPS_BEFORE_RESET;
-#endif //RESET
+#endif //RESET_ACTIVE
 
 void setup() {
     Serial.begin(BAUD_RATE);
@@ -88,17 +88,19 @@ void switchLedAndDelay() {
 }
 
 short counter = 0;
+unsigned long nextWakeup=0;
 
 void loop() {
-    if (counter * SLEEP_TIME < USER_LOOP_TIME) {
-        ++counter;
+    unsigned long currentMillis = millis();
+    if (currentMillis < nextWakeup) {
+//        ++counter;
         TRACE_LN("skipping...")
     } else {
-        #ifdef RESET
+        #ifdef RESET_ACTIVE
         resetLoop();
-        #endif //RESET
+        #endif //RESET_ACTIVE
 
-        counter = 0;
+        nextWakeup = currentMillis+USER_LOOP_TIME;
         LOG_IF_DEBUG_LN("Looping...")
 
         #ifdef LED_DEBUG
@@ -128,7 +130,9 @@ void loop() {
         getMqttClient()->publish(MQTT_TOPIC_THERMOSTAT_HEATING, String(thermostat->shouldHeat()));
         #endif //THERMOSTAT_ACTIVE
 
-
+        #ifdef LED_DEBUG
+        digitalWrite(PIN_LED, LOW)
+        #endif //LED_DEBUG
         LOG_IF_DEBUG_LN("-----------------------------------------------------------------------------------")
     }
     TRACE("Mqtt loop")
@@ -137,7 +141,7 @@ void loop() {
     TRACE("End of loop.")
 }
 
-#ifdef RESET
+#ifdef RESET_ACTIVE
 
 void resetLoop() {
     if (loopsBeforeReset > 0) {
@@ -149,5 +153,5 @@ void resetLoop() {
     }
 }
 
-#endif //RESET
+#endif //RESET_ACTIVE
 

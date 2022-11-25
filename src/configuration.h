@@ -1,17 +1,9 @@
 
 #ifndef ARDUINOTHERMOSTAT_CONFIGURATION_H
 #define ARDUINOTHERMOSTAT_CONFIGURATION_H
+#include "specific.h"
 
-
-#define BAUD_RATE 115200
-#define USER_LOOP_TIME 10e3 //10s
-#define SLEEP_TIME 10
-#define LED_UP_TIME 5
-//#define DEBUG_SERIAL
-//#define DEBUG_TRACE
-//#define DEBUG_LED
-#define REMAINING_SLEEP_TIME SLEEP_TIME - LED_UP_TIME
-
+// DEBUG --------------------------------------
 #ifdef DEBUG_SERIAL
     #define LOG_IF_DEBUG_LN(l){Serial.println(l);}
     #define LOG_IF_DEBUG(l){Serial.print(l);}
@@ -33,41 +25,52 @@
     #define PIN_LED 16
 #endif //DEBUG_LED
 
+// CONSTANTS --------------------------------------
+#define DOT_TEMPERATURE ".temperature"
+#define DOT_HUMIDITY ".humidity"
+#define DOT_MODEL ".nodemcu"
+#define REMAINING_SLEEP_TIME SLEEP_TIME - LED_UP_TIME
+#define BAUD_RATE 115200
+#define USER_LOOP_TIME 10e3 //10s
+#define SLEEP_TIME 10
+
+// FUNCTIONS --------------------------------------
 #define MIN(a, b) a < b ? a : b
 #define MAX(a, b) a < b ? b : a
 
-#define RESET
-#ifdef RESET
+// RESET --------------------------------------
+#ifdef RESET_ACTIVE
 #define USER_LOOPS_BEFORE_RESET 6 * 60 * 60 * 1000 / USER_LOOP_TIME
-#endif //RESET
+#endif //RESET_ACTIVE
 
-#define WIFI_ACTIVE
+// WIFI --------------------------------------
 #ifdef WIFI_ACTIVE
     #define WIFI_SSID "BandelBorgraeveAN"
     #define WIFI_PWD "coucoucnous"
 #endif //WIFI_ACTIVE
 
-#define MQTT_ACTIVE
+// MQTT --------------------------------------
 #ifdef MQTT_ACTIVE
     #define MQTT_SERVER_HOST "10.0.0.223"
     #define MQTT_SERVER_PORT 1883
     #define MQTT_USER "mqtt"
     #define MQTT_PWD "Kz2kXddmXz4n39AXM97i"
-    #define MQTT_CLIENT_NAME "nodeMcuTest"
+    #define MQTT_CLIENT_NAME LOCATION DOT_MODEL
     #define MQTT_TOPIC_UPDATE "topicUpdate"
     #define MQTT_TOPIC_MESSAGES "mytopic/test"
-    #define MQTT_TOPIC_TEMPERATURE "gas.temperature"
-    #define MQTT_TOPIC_HUMIDITY "gas.humidity"
+    #define MQTT_TOPIC_TEMPERATURE LOCATION DOT_TEMPERATURE
+    #define MQTT_TOPIC_HUMIDITY LOCATION DOT_HUMIDITY
     #define MQTT_RECONNECT_DELAY_MS 500
 #endif //MQTT_ACTIVE
 
+// DHT  --------------------------------------
 #define DHT_ACTIVE
     #ifdef DHT_ACTIVE
     #define DHT_PIN 4
     #define DHT_TYPE DHT22
 #endif //DHT_ACTIVE
 
-#define THERMOSTAT_ACTIVE
+// THERMOSTAT --------------------------------------
 #ifdef THERMOSTAT_ACTIVE
     #define THERMOSTAT_CONTROL_PIN 5
     #define ALPHA 0.05
@@ -76,13 +79,13 @@
     #define HYSTERESIS_DELTA 1.0
     #define INITIAL_VALUE 15
     #ifdef MQTT_ACTIVE
-        #define TARGET_TEMPERATURE_TOPIC "gas.target.temperature"
+        #define TARGET_TEMPERATURE_TOPIC LOCATION+".target.temperature"
     #endif //MQTT_ACTIVE
-    #define MQTT_TOPIC_THERMOSTAT_TEMPERATURE "gas.thermostat.temperature"
-    #define MQTT_TOPIC_THERMOSTAT_HEATING "gas.thermostat.heating"
+    #define MQTT_TOPIC_THERMOSTAT_TEMPERATURE LOCATION+".thermostat.temperature"
+    #define MQTT_TOPIC_THERMOSTAT_HEATING LOCATION+".thermostat.heating"
 #endif //THERMOSTAT ACTIVE
 
-#define TIMER_ACTIVE
+// TIMER --------------------------------------
 #ifdef TIMER_ACTIVE
     #define TIME_SERVER "us.pool.ntp.org"
 #endif //TIMER_ACTIVE
