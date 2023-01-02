@@ -43,6 +43,7 @@ if (CMAKE_BUILD_TYPE MATCHES "esp01")
 
     include_directories("${CMAKE_CURRENT_LIST_DIR}/include")
     include_directories("${CMAKE_CURRENT_LIST_DIR}/src")
+    include_directories("${CMAKE_CURRENT_LIST_DIR}/.pio/libdeps/esp01/IRremoteESP8266/src")
     include_directories("${CMAKE_CURRENT_LIST_DIR}/.pio/libdeps/esp01/Time")
     include_directories("${CMAKE_CURRENT_LIST_DIR}/.pio/libdeps/esp01/PString-Arduino-lib")
     include_directories("${CMAKE_CURRENT_LIST_DIR}/.pio/libdeps/esp01/NTPClient")

@@ -1,0 +1,25 @@
+off heating 17:
+0
+21DE
+Protocol=Samsung Address=0xB24D Command=0x2121 Raw-Data=0x21DE 48 bits LSB first
+
+
+on heating 17:
+0
+2FD
+Protocol=Samsung Address=0xB24D Command=0x202 Raw-Data=0x2FD 48 bits LSB first
+
+T up from 17 to 18:
+0
+2FD
+Protocol=Samsung Address=0xB24D Command=0x202 Raw-Data=0x2FD 48 bits LSB first
+
+T up from 18 to 19:
+0
+2FD
+Protocol=Samsung Address=0xB24D Command=0x202 Raw-Data=0x2FD 48 bits LSB first
+
+T down from 18 to 19:
+0
+2FD
+Protocol=Samsung Address=0xB24D Command=0x202 Raw-Data=0x2FD 48 bits LSB first

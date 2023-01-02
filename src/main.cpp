@@ -12,6 +12,10 @@
 #ifdef DHT_ACTIVE
 #include "./dht/dht.h"
 #endif //DHT_ACTIVE
+#ifdef IR_READER
+//#include <IRremote.hpp>
+#include "ir_reader/ir_reader.h"
+#endif //IR_READER
 
 #ifdef THERMOSTAT_ACTIVE
 #include "./thermostat/thermostat.h"
@@ -60,6 +64,9 @@ void setup() {
     subscribeThermostat();
         #endif //MQTT_ACTIVE
     #endif //THERMOSTAT_ACTIVE
+    #ifdef IR_READER
+    setupIrReader();
+    #endif //IR_READER
 
     Serial.println("Finished initializing...");
 }
@@ -121,8 +128,10 @@ void loop() {
         LOG_IF_DEBUG("Humidity:")
         LOG_IF_DEBUG_LN(hum)
 
+        #ifdef MQTT_ACTIVE
         getMqttClient()->publish(MQTT_TOPIC_TEMPERATURE, temp);
         getMqttClient()->publish(MQTT_TOPIC_HUMIDITY, hum);
+        #endif //MQTT_ACTIVE
 
         #ifdef THERMOSTAT_ACTIVE
         thermostat->loop(dhtTemp.temperature);
@@ -135,8 +144,13 @@ void loop() {
         #endif //LED_DEBUG
         LOG_IF_DEBUG_LN("-----------------------------------------------------------------------------------")
     }
-    TRACE("Mqtt loop")
+    #ifdef MQTT_ACTIVE
     getMqttClient()->loop();
+    TRACE("Mqtt loop")
+    #endif //MQTT_ACTIVE
+    #ifdef IR_READER
+    loopIrReader();
+    #endif //IR_READER
     switchLedAndDelay();
     TRACE("End of loop.")
 }
