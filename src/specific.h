@@ -15,9 +15,9 @@
 //#define WIFI_ACTIVE
 //#define RESET_ACTIVE
 //#define LED_UP_TIME 5
-//#define DEBUG_SERIAL
-//#define DEBUG_TRACE
+#define DEBUG_SERIAL
+//#define DEBUG_ToRACE
 //#define DEBUG_LED
 #define IR_READER
-
+#define IR_SENDER
 #endif //ARDUINOTHERMOSTAT_SPECIFIC_H

@@ -12,10 +12,14 @@
 #ifdef DHT_ACTIVE
 #include "./dht/dht.h"
 #endif //DHT_ACTIVE
+
 #ifdef IR_READER
-//#include <IRremote.hpp>
 #include "ir_reader/ir_reader.h"
 #endif //IR_READER
+
+#ifdef IR_SENDER
+#include "ir_sender/ir_sender.h"
+#endif //IR_SENDER
 
 #ifdef THERMOSTAT_ACTIVE
 #include "./thermostat/thermostat.h"
@@ -68,6 +72,9 @@ void setup() {
     setupIrReader();
     #endif //IR_READER
 
+    #ifdef IR_SENDER
+    setupIrSender();
+    #endif //IR_SENDER
     Serial.println("Finished initializing...");
 }
 
@@ -100,7 +107,6 @@ unsigned long nextWakeup=0;
 void loop() {
     unsigned long currentMillis = millis();
     if (currentMillis < nextWakeup) {
-//        ++counter;
         TRACE_LN("skipping...")
     } else {
         #ifdef RESET_ACTIVE
@@ -115,8 +121,10 @@ void loop() {
         #endif //LED_DEBUG
 
         #ifdef DEBUG_SERIAL
+        #ifdef MQTT_ACTIVE
         LOG_IF_DEBUG_LN("Client publish")
         getMqttClient()->publish(MQTT_TOPIC_MESSAGES, "messagePublished from NodeMcu !")
+        #endif //MQTT_ACTIVE
         #endif //DEBUG_SERIAL
 
         DhtResult dhtTemp = readDht();
@@ -138,6 +146,10 @@ void loop() {
         getMqttClient()->publish(MQTT_TOPIC_THERMOSTAT_TEMPERATURE, String(thermostat->readValue()));
         getMqttClient()->publish(MQTT_TOPIC_THERMOSTAT_HEATING, String(thermostat->shouldHeat()));
         #endif //THERMOSTAT_ACTIVE
+
+        #ifdef IR_SENDER
+        loopIrSender();
+        #endif //IR_SENDER
 
         #ifdef LED_DEBUG
         digitalWrite(PIN_LED, LOW)

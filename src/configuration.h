@@ -95,10 +95,12 @@
 //IR READER
 #ifdef IR_READER
     #define IR_READER_PIN 12
-    #define IR_SEND_PIN IR_READER_PIN
-//    #define ENABLE_LED_FEEDBACK true
-    #define NO_LED_FEEDBACK_CODE true
-//    #define DECODE_SAMSUNG
-    #define RAW_BUFFER_LENGTH 200
+#endif //IR_READER
 
-#endif
+//IR Sender
+#ifdef IR_SENDER
+//    #define _IR_ENABLE_DEFAULT_ false
+//    #define DECODE_COOLIX true
+//    #define SEND_COOLIX true
+    #define IR_SENDER_PIN 14
+#endif //IR_SENDER

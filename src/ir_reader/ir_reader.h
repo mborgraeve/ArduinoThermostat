@@ -5,8 +5,6 @@
 #ifdef IR_READER
 #ifndef ARDUINOTHERMOSTAT_IR_READER_H
 #define ARDUINOTHERMOSTAT_IR_READER_H
-#define USE_IRREMOTE_HPP_AS_PLAIN_INCLUDE
-//#include <IRremote.hpp>
 #include <IRrecv.h>
 #include <IRremoteESP8266.h>
 #include <IRac.h>
