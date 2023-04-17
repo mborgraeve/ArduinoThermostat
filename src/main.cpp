@@ -17,16 +17,19 @@
 #include "ir_reader/ir_reader.h"
 #endif //IR_READER
 
-#ifdef IR_SENDER
-#include "ir_sender/ir_sender.h"
-#endif //IR_SENDER
-
 #ifdef THERMOSTAT_ACTIVE
 #include "./thermostat/thermostat.h"
-
 Thermostat *thermostat;
-Timer *timer;
 #endif //THERMOSTAT_ACTIVE
+
+#ifdef COOLING_THERMOSTAT_ACTIVE
+#include "./AcThermostat/AcThermostat.h"
+CoolingThermostat *coolingThermostat;
+#endif //COOLING_THERMOSTAT_ACTIVE
+
+#ifdef TIMER_ACTIVE
+Timer *timer;
+#endif //TIMER_ACTIVE
 
 void subscribeThermostat();
 
@@ -72,13 +75,11 @@ void setup() {
     setupIrReader();
     #endif //IR_READER
 
-    #ifdef IR_SENDER
-    setupIrSender();
-    #endif //IR_SENDER
     Serial.println("Finished initializing...");
 }
 
 #ifdef THERMOSTAT_ACTIVE
+
 void subscribeThermostat() {
     getMqttClient()->setOnConnectionEstablishedCallback([]() {
         getMqttClient()->subscribe(TARGET_TEMPERATURE_TOPIC, [](const String &payload) {
@@ -88,6 +89,7 @@ void subscribeThermostat() {
         });
     });
 }
+
 #endif //THERMOSTAT_ACTIVE
 
 void switchLedAndDelay() {
@@ -102,7 +104,7 @@ void switchLedAndDelay() {
 }
 
 short counter = 0;
-unsigned long nextWakeup=0;
+unsigned long nextWakeup = 0;
 
 void loop() {
     unsigned long currentMillis = millis();
@@ -113,7 +115,7 @@ void loop() {
         resetLoop();
         #endif //RESET_ACTIVE
 
-        nextWakeup = currentMillis+USER_LOOP_TIME;
+        nextWakeup = currentMillis + USER_LOOP_TIME;
         LOG_IF_DEBUG_LN("Looping...")
 
         #ifdef LED_DEBUG
@@ -121,10 +123,10 @@ void loop() {
         #endif //LED_DEBUG
 
         #ifdef DEBUG_SERIAL
-        #ifdef MQTT_ACTIVE
+            #ifdef MQTT_ACTIVE
         LOG_IF_DEBUG_LN("Client publish")
         getMqttClient()->publish(MQTT_TOPIC_MESSAGES, "messagePublished from NodeMcu !")
-        #endif //MQTT_ACTIVE
+            #endif //MQTT_ACTIVE
         #endif //DEBUG_SERIAL
 
         DhtResult dhtTemp = readDht();
@@ -147,9 +149,11 @@ void loop() {
         getMqttClient()->publish(MQTT_TOPIC_THERMOSTAT_HEATING, String(thermostat->shouldHeat()));
         #endif //THERMOSTAT_ACTIVE
 
-        #ifdef IR_SENDER
-        loopIrSender();
-        #endif //IR_SENDER
+        #ifdef COOLING_THERMOSTAT_ACTIVE
+        coolingThermostat->loop(dhtTemp.temperature);
+        getMqttClient()->publish(MQTT_TOPIC_COOLING_THERMOSTAT_TEMPERATURE, String(coolingThermostat->readValue()));
+        getMqttClient()->publish(MQTT_TOPIC_COOLING_THERMOSTAT, String(coolingThermostat->shouldCool()));
+        #endif //COOLING_THERMOSTAT_ACTIVE
 
         #ifdef LED_DEBUG
         digitalWrite(PIN_LED, LOW)

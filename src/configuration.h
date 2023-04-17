@@ -85,6 +85,21 @@
     #define MQTT_TOPIC_THERMOSTAT_HEATING LOCATION ".thermostat.heating"
 #endif //THERMOSTAT_ACTIVE
 
+// COOLING THERMOSTAT --------------------------------------
+#ifdef COOLING_THERMOSTAT_ACTIVE
+    #define COOLING_THERMOSTAT_CONTROL_PIN 14
+    #define COOLING_ALPHA 0.05
+    #define COOLING_UPDATE_DELAY 1
+    #define COOLING_DEFAULT_TARGET 30.0
+    #define COOLING_HYSTERESIS_DELTA 1.0
+    #define COOLING_INITIAL_VALUE 28.0
+    #ifdef MQTT_ACTIVE
+        #define TARGET_TEMPERATURE_TOPIC LOCATION ".target.temperature"
+    #endif //MQTT_ACTIVE
+    #define MQTT_TOPIC_COOLING_THERMOSTAT_TEMPERATURE LOCATION ".thermostat.temperature"
+    #define MQTT_TOPIC_COOLING_THERMOSTAT LOCATION ".thermostat.cooling"
+#endif //COOLING_THERMOSTAT_ACTIVE
+
 // TIMER --------------------------------------
 #ifdef TIMER_ACTIVE
     #define TIME_SERVER "us.pool.ntp.org"
@@ -96,11 +111,3 @@
 #ifdef IR_READER
     #define IR_READER_PIN 12
 #endif //IR_READER
-
-//IR Sender
-#ifdef IR_SENDER
-//    #define _IR_ENABLE_DEFAULT_ false
-//    #define DECODE_COOLIX true
-//    #define SEND_COOLIX true
-    #define IR_SENDER_PIN 14
-#endif //IR_SENDER

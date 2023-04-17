@@ -1,6 +1,9 @@
 #include "configuration.h"
 
 #ifdef THERMOSTAT_ACTIVE
+    #ifndef TIMER_ACTIVE
+        #error THERMOSTAT needs TIMER
+    #endif //TIMER_ACTIVE
 #include "thermostat.h"
 #include <algorithm>
 
