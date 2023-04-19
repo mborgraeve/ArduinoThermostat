@@ -31,7 +31,12 @@ CoolingThermostat *coolingThermostat;
 Timer *timer;
 #endif //TIMER_ACTIVE
 
+#ifdef THERMOSTAT_ACTIVE
 void subscribeThermostat();
+#endif //THERMOSTAT_ACTIVE
+#ifdef COOLING_THERMOSTAT_ACTIVE
+void subscribeCoolingThermostat();
+#endif //COOLING_THERMOSTAT_ACTIVE
 
 bool doSubscribe();
 
@@ -71,6 +76,13 @@ void setup() {
     subscribeThermostat();
         #endif //MQTT_ACTIVE
     #endif //THERMOSTAT_ACTIVE
+
+    #ifdef COOLING_THERMOSTAT_ACTIVE
+    coolingThermostat = new CoolingThermostat(timer);
+        #ifdef MQTT_ACTIVE
+            subscribeCoolingThermostat();
+        #endif //MQTT_ACTIVE
+    #endif //COOLING_THERMOSTAT_ACTIVE
     #ifdef IR_READER
     setupIrReader();
     #endif //IR_READER
@@ -79,7 +91,6 @@ void setup() {
 }
 
 #ifdef THERMOSTAT_ACTIVE
-
 void subscribeThermostat() {
     getMqttClient()->setOnConnectionEstablishedCallback([]() {
         getMqttClient()->subscribe(TARGET_TEMPERATURE_TOPIC, [](const String &payload) {
@@ -89,8 +100,18 @@ void subscribeThermostat() {
         });
     });
 }
-
 #endif //THERMOSTAT_ACTIVE
+#ifdef COOLING_THERMOSTAT_ACTIVE
+void subscribeCoolingThermostat() {
+    getMqttClient()->setOnConnectionEstablishedCallback([]() {
+        getMqttClient()->subscribe(TARGET_TEMPERATURE_TOPIC, [](const String &payload) {
+            LOG_IF_DEBUG_LN("Received new target temperature:")
+            LOG_IF_DEBUG_LN(payload)
+            coolingThermostat->updateTargetTemperature(payload.toFloat());
+        });
+    });
+}
+#endif //COOLING_THERMOSTAT_ACTIVE
 
 void switchLedAndDelay() {
     #ifdef DEBUG_LED
@@ -152,7 +173,7 @@ void loop() {
         #ifdef COOLING_THERMOSTAT_ACTIVE
         coolingThermostat->loop(dhtTemp.temperature);
         getMqttClient()->publish(MQTT_TOPIC_COOLING_THERMOSTAT_TEMPERATURE, String(coolingThermostat->readValue()));
-        getMqttClient()->publish(MQTT_TOPIC_COOLING_THERMOSTAT, String(coolingThermostat->shouldCool()));
+        getMqttClient()->publish(MQTT_TOPIC_COOLING_THERMOSTAT_COOLING, String(coolingThermostat->shouldCool()));
         #endif //COOLING_THERMOSTAT_ACTIVE
 
         #ifdef LED_DEBUG

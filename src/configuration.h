@@ -87,6 +87,8 @@
 
 // COOLING THERMOSTAT --------------------------------------
 #ifdef COOLING_THERMOSTAT_ACTIVE
+    #define _IR_ENABLE_DEFAULT_ false
+    #define SEND_COOLIX true
     #define COOLING_THERMOSTAT_CONTROL_PIN 14
     #define COOLING_ALPHA 0.05
     #define COOLING_UPDATE_DELAY 1
@@ -97,7 +99,7 @@
         #define TARGET_TEMPERATURE_TOPIC LOCATION ".target.temperature"
     #endif //MQTT_ACTIVE
     #define MQTT_TOPIC_COOLING_THERMOSTAT_TEMPERATURE LOCATION ".thermostat.temperature"
-    #define MQTT_TOPIC_COOLING_THERMOSTAT LOCATION ".thermostat.cooling"
+    #define MQTT_TOPIC_COOLING_THERMOSTAT_COOLING LOCATION ".thermostat.cooling"
 #endif //COOLING_THERMOSTAT_ACTIVE
 
 // TIMER --------------------------------------

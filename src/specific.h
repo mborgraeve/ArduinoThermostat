@@ -9,17 +9,16 @@
 //#define LOCATION "gas"
 #define LOCATION "palier"
 
-//#define THERMOSTAT_ACTIVE
+#define THERMOSTAT_ACTIVE
 #define COOLING_THERMOSTAT_ACTIVE
 #define TIMER_ACTIVE
 #define MQTT_ACTIVE
 #define WIFI_ACTIVE
-//#define COOLING_THERMOSTAT
 
 //#define RESET_ACTIVE
 //#define LED_UP_TIME 5
 //#define DEBUG_SERIAL
 //#define DEBUG_TRACE
 //#define DEBUG_LED
-#define IR_READER
+//#define IR_READER
 #endif //ARDUINOTHERMOSTAT_SPECIFIC_H
