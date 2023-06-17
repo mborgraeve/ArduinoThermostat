@@ -6,11 +6,11 @@
 #define ARDUINOTHERMOSTAT_SPECIFIC_H
 
 //#define LOCATION "tv"
-//#define LOCATION "gas"
-#define LOCATION "palier"
+#define LOCATION "gas"
+//#define LOCATION "tv"
 
 #define THERMOSTAT_ACTIVE
-#define COOLING_THERMOSTAT_ACTIVE
+//#define COOLING_THERMOSTAT_ACTIVE
 #define TIMER_ACTIVE
 #define MQTT_ACTIVE
 #define WIFI_ACTIVE

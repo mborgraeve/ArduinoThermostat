@@ -17,6 +17,10 @@
 #include "ir_reader/ir_reader.h"
 #endif //IR_READER
 
+#ifdef TIMER_ACTIVE
+#include "timer/Timer.h"
+#endif //TIMER_ACTIVE
+
 #ifdef THERMOSTAT_ACTIVE
 #include "./thermostat/thermostat.h"
 Thermostat *thermostat;
@@ -146,7 +150,7 @@ void loop() {
         #ifdef DEBUG_SERIAL
             #ifdef MQTT_ACTIVE
         LOG_IF_DEBUG_LN("Client publish")
-        getMqttClient()->publish(MQTT_TOPIC_MESSAGES, "messagePublished from NodeMcu !")
+        getMqttClient()->publish(MQTT_TOPIC_MESSAGES, "messagePublished from NodeMcu !");
             #endif //MQTT_ACTIVE
         #endif //DEBUG_SERIAL
 

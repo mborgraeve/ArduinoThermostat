@@ -29,7 +29,7 @@ private:
     float target;
     Timer *timer;
     time_t lastUpdate;
-    bool state;
+    bool isCooling;
 public:
     virtual ~CoolingThermostat();
 

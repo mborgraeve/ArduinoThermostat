@@ -51,7 +51,7 @@
 
 // MQTT --------------------------------------
 #ifdef MQTT_ACTIVE
-    #define MQTT_SERVER_HOST "10.0.0.223"
+    #define MQTT_SERVER_HOST "10.0.0.249"
     #define MQTT_SERVER_PORT 1883
     #define MQTT_USER "mqtt"
     #define MQTT_PWD "Kz2kXddmXz4n39AXM97i"
