@@ -41,21 +41,26 @@ void CoolingThermostat::loop(float value) {
     //update state
     bool stateChanged = false;
     if (isCooling) { //already cooling
-        if (value < this->target - COOLING_HYSTERESIS_DELTA) {
+        if (this->readValue() < this->target - COOLING_HYSTERESIS_DELTA) {
             // if we went over the hysteresis, turn it off
             this->isCooling = false;
             stateChanged = true;
         } //else continue cooling
     } else {
         //if we went above hysteresis, start cooling
-        if (value > this->target + COOLING_HYSTERESIS_DELTA) {
+        if (this->readValue() > this->target + COOLING_HYSTERESIS_DELTA) {
             this->isCooling = true;
             stateChanged = true;
         } //else keep it off
     }
     //update the state
     if (stateChanged) {
-        this->isCooling ? this->ac->on() : this->ac->off();
+        if (this->isCooling) {
+            this->ac->setSensorTemp((uint8_t) target);
+            this->ac->on();
+        } else {
+            this->ac->off();
+        }
     }
     LOG_IF_DEBUG_LN("Updated CoolingThermostat value and pin to:")
     LOG_IF_DEBUG_LN(this->shouldCool())
@@ -70,7 +75,7 @@ bool CoolingThermostat::shouldCool() const {
 }
 
 void CoolingThermostat::updateTargetTemperature(float temperature) {
-    this->target = MAX(temperature, COOLING_DEFAULT_TARGET);
+    this->target = MIN(temperature, COOLING_DEFAULT_TARGET);
 }
 
 #endif //COOLING_THERMOSTAT_ACTIVE

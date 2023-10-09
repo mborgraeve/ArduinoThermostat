@@ -5,12 +5,12 @@
 #ifndef ARDUINOTHERMOSTAT_SPECIFIC_H
 #define ARDUINOTHERMOSTAT_SPECIFIC_H
 
+//#define LOCATION "gas"
 //#define LOCATION "tv"
-#define LOCATION "gas"
-//#define LOCATION "tv"
+#define LOCATION "palier"
 
-#define THERMOSTAT_ACTIVE
-//#define COOLING_THERMOSTAT_ACTIVE
+//#define THERMOSTAT_ACTIVE
+#define COOLING_THERMOSTAT_ACTIVE
 #define TIMER_ACTIVE
 #define MQTT_ACTIVE
 #define WIFI_ACTIVE
@@ -18,6 +18,7 @@
 //#define RESET_ACTIVE
 //#define LED_UP_TIME 5
 //#define DEBUG_SERIAL
+//#define DEBUG_MQTT
 //#define DEBUG_TRACE
 //#define DEBUG_LED
 //#define IR_READER

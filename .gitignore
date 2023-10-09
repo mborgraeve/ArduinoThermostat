@@ -52,3 +52,4 @@ cmake-build-esp01/**
 
 platform.io
 .pio/**
+CMakeListsPrivate.txt

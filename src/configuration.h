@@ -4,12 +4,26 @@
 #include "specific.h"
 
 // DEBUG --------------------------------------
-#ifdef DEBUG_SERIAL
+#if defined(DEBUG_SERIAL)
     #define LOG_IF_DEBUG_LN(l){Serial.println(l);}
     #define LOG_IF_DEBUG(l){Serial.print(l);}
     #ifdef DEBUG_TRACE
         #define TRACE(l) LOG_IF_DEBUG(l)
         #define TRACE_LN(l)  LOG_IF_DEBUG_LN(l)
+    #else
+        #define TRACE(l){}
+        #define TRACE_LN(l){}
+    #endif //DEBUG_TRACE
+#elif defined(DEBUG_MQTT)
+#   ifndef MQTT_ACTIVE
+#       error DEBUG_MQTT requires MQTT_ACTIVE
+#   endif // MQTT_ACTIVE
+
+#   define LOG_IF_DEBUG_LN(l){if (mqttClient.connected()){ mqttClient.publish("debug", l);}}
+#   define LOG_IF_DEBUG(l){if (mqttClient.connected()) {mqttClient.publish("debug", l);}}
+#   ifdef DEBUG_TRACE
+#       define TRACE(l) LOG_IF_DEBUG(l) \
+#       define TRACE_LN(l)  LOG_IF_DEBUG_LN(l)
     #else
         #define TRACE(l){}
         #define TRACE_LN(l){}
@@ -29,7 +43,7 @@
 #define DOT_TEMPERATURE ".temperature"
 #define DOT_HUMIDITY ".humidity"
 #define DOT_MODEL ".nodemcu"
-#define REMAINING_SLEEP_TIME SLEEP_TIME - LED_UP_TIME
+#define REMAINING_SLEEP_TIME (SLEEP_TIME - LED_UP_TIME)
 #define BAUD_RATE 115200
 #define USER_LOOP_TIME 10e3 //10s
 #define SLEEP_TIME 10
@@ -45,7 +59,7 @@
 
 // WIFI --------------------------------------
 #ifdef WIFI_ACTIVE
-    #define WIFI_SSID "BandelBorgraeveAN"
+    #define WIFI_SSID "BandelBorgraeveBGN"
     #define WIFI_PWD "coucoucnous"
 #endif //WIFI_ACTIVE
 
@@ -72,6 +86,9 @@
 
 // THERMOSTAT --------------------------------------
 #ifdef THERMOSTAT_ACTIVE
+    #ifndef TIMER_ACTIVE
+        #error THERMOSTAT needs TIMER
+    #endif //TIMER_ACTIVE
     #define THERMOSTAT_CONTROL_PIN 5
     #define ALPHA 0.05
     #define UPDATE_DELAY 1
@@ -87,14 +104,17 @@
 
 // COOLING THERMOSTAT --------------------------------------
 #ifdef COOLING_THERMOSTAT_ACTIVE
+    #ifndef TIMER_ACTIVE
+        #error THERMOSTAT needs TIMER
+    #endif //TIMER_ACTIVE
     #define _IR_ENABLE_DEFAULT_ false
     #define SEND_COOLIX true
     #define COOLING_THERMOSTAT_CONTROL_PIN 14
     #define COOLING_ALPHA 0.05
     #define COOLING_UPDATE_DELAY 1
-    #define COOLING_DEFAULT_TARGET 30.0
+    #define COOLING_DEFAULT_TARGET 32.0
     #define COOLING_HYSTERESIS_DELTA 1.0
-    #define COOLING_INITIAL_VALUE 28.0
+    #define COOLING_INITIAL_VALUE 30.0
     #ifdef MQTT_ACTIVE
         #define TARGET_TEMPERATURE_TOPIC LOCATION ".target.temperature"
     #endif //MQTT_ACTIVE
