@@ -10,12 +10,13 @@
 #define LOCATION "palier"
 
 //#define THERMOSTAT_ACTIVE
-#define COOLING_THERMOSTAT_ACTIVE
+//#define COOLING_THERMOSTAT_ACTIVE
+#define HEATING_THERMOSTAT_ACTIVE
 #define TIMER_ACTIVE
 #define MQTT_ACTIVE
 #define WIFI_ACTIVE
 
-//#define RESET_ACTIVE
+#define RESET_ACTIVE
 //#define LED_UP_TIME 5
 //#define DEBUG_SERIAL
 //#define DEBUG_MQTT

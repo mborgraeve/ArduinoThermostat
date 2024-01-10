@@ -45,7 +45,7 @@
 #define DOT_MODEL ".nodemcu"
 #define REMAINING_SLEEP_TIME (SLEEP_TIME - LED_UP_TIME)
 #define BAUD_RATE 115200
-#define USER_LOOP_TIME 10e3 //10s
+#define USER_LOOP_TIME 10000 //10s
 #define SLEEP_TIME 10
 
 // FUNCTIONS --------------------------------------
@@ -54,7 +54,7 @@
 
 // RESET --------------------------------------
 #ifdef RESET_ACTIVE
-#define USER_LOOPS_BEFORE_RESET 6 * 60 * 60 * 1000 / USER_LOOP_TIME
+#define USER_LOOPS_BEFORE_RESET 21600000 / USER_LOOP_TIME // 6 * 60 * 60 * 1000 -> every 6 hours
 #endif //RESET_ACTIVE
 
 // WIFI --------------------------------------
@@ -107,6 +107,9 @@
     #ifndef TIMER_ACTIVE
         #error THERMOSTAT needs TIMER
     #endif //TIMER_ACTIVE
+    #ifdef HEATING_THERMOSTAT_ACTIVE
+        #error COOLING and HEATING thermostat cannot be activated together.
+    #endif //HEATING_THERMOSTAT_ACTIVE
     #define _IR_ENABLE_DEFAULT_ false
     #define SEND_COOLIX true
     #define COOLING_THERMOSTAT_CONTROL_PIN 14
@@ -121,6 +124,28 @@
     #define MQTT_TOPIC_COOLING_THERMOSTAT_TEMPERATURE LOCATION ".thermostat.temperature"
     #define MQTT_TOPIC_COOLING_THERMOSTAT_COOLING LOCATION ".thermostat.cooling"
 #endif //COOLING_THERMOSTAT_ACTIVE
+
+// HEATING THERMOSTAT --------------------------------------
+#ifdef HEATING_THERMOSTAT_ACTIVE
+    #ifndef TIMER_ACTIVE
+        #error THERMOSTAT needs TIMER
+    #endif //TIMER_ACTIVE
+    #ifdef COOLING_THERMOSTAT_ACTIVE
+        #error COOLING and HEATING thermostat cannot be activated together.
+    #endif //COOLING_THERMOSTAT_ACTIVE
+    #define _IR_ENABLE_DEFAULT_ false
+    #define SEND_COOLIX true
+    #define HEATING_THERMOSTAT_CONTROL_PIN 14
+    #define HEATING_ALPHA 0.05
+    #define HEATING_UPDATE_DELAY 1
+    #define HEATING_DEFAULT_TARGET 17.0
+    #define HEATING_INITIAL_VALUE 16.0
+    #ifdef MQTT_ACTIVE
+        #define TARGET_TEMPERATURE_TOPIC LOCATION ".target.temperature"
+    #endif //MQTT_ACTIVE
+    #define MQTT_TOPIC_HEATING_THERMOSTAT_TEMPERATURE LOCATION ".thermostat.temperature"
+    #define MQTT_TOPIC_HEATING_THERMOSTAT_HEATING LOCATION ".thermostat.heating"
+#endif //HEATING_THERMOSTAT_ACTIVE
 
 // TIMER --------------------------------------
 #ifdef TIMER_ACTIVE

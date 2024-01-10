@@ -30,6 +30,10 @@ Thermostat *thermostat;
 #include "./AcThermostat/AcThermostat.h"
 CoolingThermostat *coolingThermostat;
 #endif //COOLING_THERMOSTAT_ACTIVE
+#ifdef HEATING_THERMOSTAT_ACTIVE
+#include "./AcHeatingThermostat/AcHeatingThermostat.h"
+AcHeatingThermostat *heatingThermostat;
+#endif //HEATING_THERMOSTAT_ACTIVE
 
 #ifdef TIMER_ACTIVE
 Timer *timer;
@@ -41,12 +45,12 @@ void subscribeThermostat();
 #ifdef COOLING_THERMOSTAT_ACTIVE
 void subscribeCoolingThermostat();
 #endif //COOLING_THERMOSTAT_ACTIVE
-
-bool doSubscribe();
-
-void resetLoop();
+#ifdef HEATING_THERMOSTAT_ACTIVE
+void subscribeHeatingThermostat();
+#endif //HEATING_THERMOSTAT_ACTIVE
 
 #ifdef RESET_ACTIVE
+void resetLoop();
 int loopsBeforeReset = USER_LOOPS_BEFORE_RESET;
 #endif //RESET_ACTIVE
 
@@ -87,6 +91,12 @@ void setup() {
             subscribeCoolingThermostat();
         #endif //MQTT_ACTIVE
     #endif //COOLING_THERMOSTAT_ACTIVE
+    #ifdef HEATING_THERMOSTAT_ACTIVE
+    heatingThermostat = new AcHeatingThermostat(timer);
+        #ifdef MQTT_ACTIVE
+            subscribeHeatingThermostat();
+        #endif //MQTT_ACTIVE
+    #endif //HEATING_THERMOSTAT_ACTIVE
     #ifdef IR_READER
     setupIrReader();
     #endif //IR_READER
@@ -116,6 +126,17 @@ void subscribeCoolingThermostat() {
     });
 }
 #endif //COOLING_THERMOSTAT_ACTIVE
+#ifdef HEATING_THERMOSTAT_ACTIVE
+void subscribeHeatingThermostat() {
+    getMqttClient()->setOnConnectionEstablishedCallback([]() {
+        getMqttClient()->subscribe(TARGET_TEMPERATURE_TOPIC, [](const String &payload) {
+            LOG_IF_DEBUG_LN("Received new target temperature:")
+            LOG_IF_DEBUG_LN(payload)
+            heatingThermostat->updateTargetTemperature(payload.toFloat());
+        });
+    });
+}
+#endif //HEATING_THERMOSTAT_ACTIVE
 
 void switchLedAndDelay() {
     #ifdef DEBUG_LED
@@ -128,12 +149,10 @@ void switchLedAndDelay() {
     #endif //DEBUG_LED
 }
 
-short counter = 0;
 unsigned long nextWakeup = 0;
 
 void loop() {
-    unsigned long currentMillis = millis();
-    if (currentMillis < nextWakeup) {
+    if (unsigned long currentMillis = millis(); currentMillis < nextWakeup) {
         TRACE_LN("skipping...")
     } else {
         #ifdef RESET_ACTIVE
@@ -155,8 +174,8 @@ void loop() {
         #endif //DEBUG_SERIAL
 
         DhtResult dhtTemp = readDht();
-        String temp = String(dhtTemp.temperature);
-        String hum = String(dhtTemp.humidity);
+        auto temp = String(dhtTemp.temperature);
+        auto hum = String(dhtTemp.humidity);
 
         LOG_IF_DEBUG("Temperature:")
         LOG_IF_DEBUG_LN(temp)
@@ -179,6 +198,12 @@ void loop() {
         getMqttClient()->publish(MQTT_TOPIC_COOLING_THERMOSTAT_TEMPERATURE, String(coolingThermostat->readValue()));
         getMqttClient()->publish(MQTT_TOPIC_COOLING_THERMOSTAT_COOLING, String(coolingThermostat->shouldCool()));
         #endif //COOLING_THERMOSTAT_ACTIVE
+
+        #ifdef HEATING_THERMOSTAT_ACTIVE
+        heatingThermostat->loop(dhtTemp.temperature);
+        getMqttClient()->publish(MQTT_TOPIC_HEATING_THERMOSTAT_TEMPERATURE, String(heatingThermostat->readValue()));
+        getMqttClient()->publish(MQTT_TOPIC_HEATING_THERMOSTAT_HEATING, String(heatingThermostat->readTarget()));
+        #endif //HEATING_THERMOSTAT_ACTIVE
 
         #ifdef LED_DEBUG
         digitalWrite(PIN_LED, LOW)

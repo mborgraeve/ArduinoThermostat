@@ -25,7 +25,6 @@ CoolingThermostat::~CoolingThermostat() {
     this->timer = nullptr;
 }
 
-
 void CoolingThermostat::loop(float value) {
     //update value
     if (this->lastUpdate + COOLING_UPDATE_DELAY < timer->n()) {
