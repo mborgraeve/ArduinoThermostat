@@ -56,7 +56,11 @@ int loopsBeforeReset = USER_LOOPS_BEFORE_RESET;
 
 void setup() {
     Serial.begin(BAUD_RATE);
+    Serial.println("");
     Serial.println("Initializing...");
+    Serial.print("Location: ");
+    Serial.println(LOCATION);
+
 
     #ifdef DEBUG_LED
     pinMode(PIN_LED, OUTPUT);

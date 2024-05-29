@@ -5,13 +5,14 @@
 #ifndef ARDUINOTHERMOSTAT_SPECIFIC_H
 #define ARDUINOTHERMOSTAT_SPECIFIC_H
 
-//#define LOCATION "gas"
+#define LOCATION "gas"
 //#define LOCATION "tv"
-#define LOCATION "palier"
+//#define LOCATION "palier"
+//#define LOCATION "baby"
 
-//#define THERMOSTAT_ACTIVE
+#define THERMOSTAT_ACTIVE
 //#define COOLING_THERMOSTAT_ACTIVE
-#define HEATING_THERMOSTAT_ACTIVE
+//#define HEATING_THERMOSTAT_ACTIVE
 #define TIMER_ACTIVE
 #define MQTT_ACTIVE
 #define WIFI_ACTIVE
